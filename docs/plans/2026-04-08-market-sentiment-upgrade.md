@@ -1,7 +1,5 @@
 # Market Sentiment Upgrade Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** 为 `stock-assistant` 增加可回填、可视化、可被 AI 和页面复用的市场情绪能力，覆盖连板高度、炸板率、昨日涨停溢价、高位股晋级率、主线持续天数。
 
 **Architecture:** 按“原始数据 -> 情绪快照 -> API -> 首页/情绪页 -> AI/页面软联动”五阶段推进。每阶段保持最小闭环：先补测试，再实现，再跑针对性验证，再做人工验收与 Git 检查点；任一阶段未通过，不得进入下一阶段。

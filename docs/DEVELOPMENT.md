@@ -1,10 +1,10 @@
-# stock-assistant 开发规则
+# TradeLoop · 知行盘开发约定
 
 ## 项目概览
 
-- 项目名称：A 股个人交易辅助系统
-- 当前主开发版本：V8
-- 当前建议开发分支：`codex/v8`
+- 项目名称：TradeLoop · 知行盘
+- 当前公开基线：V8
+- 默认主分支：`main`
 - 技术栈：
   - 后端：FastAPI + SQLAlchemy + SQLite
   - 前端：Vue 3 + TypeScript + Pinia + Element Plus + ECharts
@@ -13,8 +13,8 @@
 
 - `docs/README.md`：文档总索引
 - `docs/V8_架构设计与开发计划.md`：V8 架构与设计
-- `docs/V8_Codex提示词.md`：V8 执行提示词
 - `docs/plans/2026-04-07-v8-upgrade.md`：V8 执行计划
+- `docs/项目全景说明书.md`：项目全景与功能总览
 
 开始新任务前，优先阅读对应版本文档，再进入代码。
 
@@ -163,4 +163,4 @@
 ## 备注
 
 - 如果任务横跨多个模块，优先拆成可验证的小闭环。
-- 如果要继续 V6 后续迭代，默认从当前文档和 `docs/` 下的 V6 文档恢复上下文。
+- 如需追溯旧版本设计，优先阅读 `docs/` 下对应版本的设计、验收与执行计划文档。

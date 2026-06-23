@@ -334,7 +334,7 @@ def test_sync_moneyflow_daily_replaces_existing_trade_date_rows(db):
     )
     db.commit()
 
-    with patch("app.services.sync_moneyflow.ts.pro_api", return_value=FakeMoneyflowPro()), patch(
+    with patch("app.services.sync_moneyflow._get_api", return_value=FakeMoneyflowPro()), patch(
         "app.services.sync_moneyflow.time.sleep", return_value=None
     ):
         result = sync_moneyflow_daily(db, ["20260407"])
@@ -351,7 +351,7 @@ def test_sync_moneyflow_daily_replaces_existing_trade_date_rows(db):
 def test_sync_moneyflow_daily_reports_failed_dates(db):
     from app.services.sync_moneyflow import sync_moneyflow_daily
 
-    with patch("app.services.sync_moneyflow.ts.pro_api", return_value=FakeMoneyflowPartialFailurePro()), patch(
+    with patch("app.services.sync_moneyflow._get_api", return_value=FakeMoneyflowPartialFailurePro()), patch(
         "app.services.sync_moneyflow.time.sleep", return_value=None
     ):
         result = sync_moneyflow_daily(db, ["20260407", "20260408"])
@@ -388,7 +388,7 @@ def test_sync_toplist_daily_replaces_existing_trade_date_rows(db):
     db.add(TopListDetail(ts_code="600000.SH", trade_date="20260407", reason="old"))
     db.commit()
 
-    with patch("app.services.sync_toplist.ts.pro_api", return_value=FakeTopListPro()), patch(
+    with patch("app.services.sync_toplist._get_api", return_value=FakeTopListPro()), patch(
         "app.services.sync_toplist.time.sleep", return_value=None
     ):
         result = sync_toplist_daily(db, ["20260407"])
@@ -409,7 +409,7 @@ def test_sync_toplist_daily_deduplicates_same_reason_and_keeps_more_complete_row
     from app.models import TopList
     from app.services.sync_toplist import sync_toplist_daily
 
-    with patch("app.services.sync_toplist.ts.pro_api", return_value=FakeTopListDuplicatePro()), patch(
+    with patch("app.services.sync_toplist._get_api", return_value=FakeTopListDuplicatePro()), patch(
         "app.services.sync_toplist.time.sleep", return_value=None
     ):
         result = sync_toplist_daily(db, ["20260407"])
@@ -430,7 +430,7 @@ def test_sync_toplist_daily_deduplicates_same_reason_and_keeps_more_complete_row
 def test_sync_toplist_daily_reports_failed_dates(db):
     from app.services.sync_toplist import sync_toplist_daily
 
-    with patch("app.services.sync_toplist.ts.pro_api", return_value=FakeTopListPartialFailurePro()), patch(
+    with patch("app.services.sync_toplist._get_api", return_value=FakeTopListPartialFailurePro()), patch(
         "app.services.sync_toplist.time.sleep", return_value=None
     ):
         result = sync_toplist_daily(db, ["20260407", "20260408"])
