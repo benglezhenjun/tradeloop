@@ -1,0 +1,14 @@
+title = "tradeloop gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "忽略依赖与构建产物，避免第三方文件误报"
+paths = [
+  '''\.venv/''',
+  '''node_modules/''',
+  '''frontend/dist/''',
+  '''uv\.lock''',
+  '''pnpm-lock\.yaml''',
+]

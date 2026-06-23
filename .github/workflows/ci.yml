@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+      - run: uv sync --group dev
+      - run: uv run ruff check .
+      # 注意：CI 不提供 config/local.toml，保持无密钥环境，持续拦截依赖真实 token 的测试
+      - run: uv run python -m pytest tests/ -q
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm type-check
+      - run: pnpm build
+
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run gitleaks
+        run: |
+          VER=8.30.1
+          curl -sSL "https://github.com/gitleaks/gitleaks/releases/download/v${VER}/gitleaks_${VER}_linux_x64.tar.gz" | tar -xz gitleaks
+          ./gitleaks detect --source . --config .gitleaks.toml --redact --verbose
+      - name: Guard large files (>25MB)
+        run: |
+          big=$(git ls-files | while read f; do sz=$(wc -c <"$f"); if [ "$sz" -gt 26214400 ]; then echo "$f ($sz bytes)"; fi; done)
+          if [ -n "$big" ]; then echo "Large files detected:"; echo "$big"; exit 1; fi
