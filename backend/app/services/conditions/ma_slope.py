@@ -1,7 +1,5 @@
 """条件：长期均线斜率（MA240）舒缓向上"""
 
-from datetime import datetime, timedelta
-
 import pandas as pd
 from sqlalchemy import text
 
@@ -40,20 +38,13 @@ class MaSlope(BaseCondition):
         slope_max = float(self.get_param(params, "slope_max"))
         trade_date = df["trade_date"].iloc[0]
 
-        # 只扫描 (ma_period + slope_window) * 2 倍日历天数，避免全表扫描
-        start_date = (
-            datetime.strptime(trade_date, "%Y%m%d")
-            - timedelta(days=(ma_period + slope_window) * 2)
-        ).strftime("%Y%m%d")
-
-        # 查询每只股票：当前MA值 和 slope_window天前的MA值
+        # 不按日历日截断，按交易日倒序取，避免长期停牌/长假股被误删（依赖 ix_daily_code_date 索引）
         sql = text("""
             WITH ranked AS (
                 SELECT ts_code, trade_date, close,
                        ROW_NUMBER() OVER (PARTITION BY ts_code ORDER BY trade_date DESC) as rn
                 FROM daily_quote
                 WHERE trade_date <= :trade_date
-                  AND trade_date >= :start_date
                   AND close IS NOT NULL
             ),
             ma_current AS (
@@ -71,7 +62,6 @@ class MaSlope(BaseCondition):
         """)
         rows = db.execute(sql, {
             "trade_date": trade_date,
-            "start_date": start_date,
             "ma_period": ma_period,
             "slope_window": slope_window,
         }).fetchall()

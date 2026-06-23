@@ -3,8 +3,11 @@
 from __future__ import annotations
 
 import json
+import logging
 
 from app.services import llm
+
+logger = logging.getLogger(__name__)
 
 _SYSTEM_PROMPT = (
     "你是一个 A 股市场分析助手。分析要专业、简洁、直接，"
@@ -36,12 +39,21 @@ def _safe_llm_call(prompt: str, *, max_tokens: int = 600, system_prompt: str = _
 
 def _extract_first_json_payload(text: str) -> str:
     decoder = json.JSONDecoder()
+    first_start: str | None = None
     for idx, char in enumerate(text):
         if char not in "[{":
             continue
+        if first_start is None:
+            first_start = char
         try:
             _, end = decoder.raw_decode(text[idx:])
-            return text[idx : idx + end]
         except json.JSONDecodeError:
             continue
+        payload = text[idx : idx + end]
+        # 截断检测：最外层以 '[' 开头却只解出一个内部对象 '{' → 多半是 max_tokens 截断的数组，
+        # 不能把数组里第一个对象当成正常结果返回，否则会掩盖真实截断
+        if first_start == "[" and payload.lstrip().startswith("{"):
+            logger.warning("LLM JSON 疑似被截断：期望数组却只解析出单个对象，按解析失败处理")
+            break
+        return payload
     return text.strip()

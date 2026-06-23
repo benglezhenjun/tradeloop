@@ -69,9 +69,10 @@ def _rebuild_position_state(trades: list[TradeRecord]) -> tuple[dict[str, Any] |
         if state["total_quantity"] < trade.quantity:
             return None, "卖出数量超过当前持仓，无法重算"
 
-        avg_cost_before_sell = state["avg_cost"]
-        state["realized_pnl"] += (trade.price - avg_cost_before_sell) * trade.quantity - trade.fee
-        state["total_cost"] -= avg_cost_before_sell * trade.quantity
+        # 精确比例摊销成本，避免用已四舍五入的均价回减导致剩余成本累积漂移
+        cost_removed = state["total_cost"] * trade.quantity / state["total_quantity"]
+        state["realized_pnl"] += trade.price * trade.quantity - cost_removed - trade.fee
+        state["total_cost"] -= cost_removed
         state["total_quantity"] -= trade.quantity
 
         if state["total_quantity"] == 0:

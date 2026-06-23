@@ -1,7 +1,5 @@
 """条件：收盘价在均线上方，且偏离不超过阈值"""
 
-from datetime import datetime, timedelta
-
 import pandas as pd
 from sqlalchemy import text
 
@@ -33,12 +31,8 @@ class MaProximity(BaseCondition):
         deviation_max = float(self.get_param(params, "deviation_max"))
         trade_date = df["trade_date"].iloc[0]
 
-        # 只扫描所需均线周期 2 倍的日历天数，避免全表扫描（3.9M → 约 11 万行）
-        start_date = (
-            datetime.strptime(trade_date, "%Y%m%d") - timedelta(days=ma_period * 2)
-        ).strftime("%Y%m%d")
-
-        # 查询每只股票的均线值
+        # 取每只股票最近 ma_period 个【交易日】均值；不按日历日截断，
+        # 否则长期停牌/长假的股票会因窗口内交易日不足被误删
         sql = text("""
             SELECT ts_code, AVG(close) as ma_val
             FROM (
@@ -46,24 +40,17 @@ class MaProximity(BaseCondition):
                        ROW_NUMBER() OVER (PARTITION BY ts_code ORDER BY trade_date DESC) as rn
                 FROM daily_quote
                 WHERE trade_date <= :trade_date
-                  AND trade_date >= :start_date
                   AND close IS NOT NULL
             )
             WHERE rn <= :period
             GROUP BY ts_code
             HAVING COUNT(*) >= :period
         """)
-        rows = db.execute(sql, {
-            "trade_date": trade_date,
-            "start_date": start_date,
-            "period": ma_period,
-        }).fetchall()
+        rows = db.execute(sql, {"trade_date": trade_date, "period": ma_period}).fetchall()
         ma_map = {r[0]: r[1] for r in rows}
 
         ma_series = df["ts_code"].map(ma_map)
         deviation = (df["close"] - ma_series) / ma_series
-
-        # 价格在均线上方（deviation > 0）且偏离 < 上限
         return (deviation > 0) & (deviation < deviation_max)
 
 
