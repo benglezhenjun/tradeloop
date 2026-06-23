@@ -10,7 +10,7 @@ V4 LLM 分析测试
 - API 端点：未配置 LLM 时返回 400；配置后正确调用 Agent
 """
 
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 import pytest
 from sqlalchemy import create_engine, event, text

@@ -11,8 +11,6 @@ import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
-
-logger = logging.getLogger(__name__)
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api import (
@@ -31,6 +29,8 @@ from app.api import (
     user_config,
     watchlist,
 )
+
+logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager

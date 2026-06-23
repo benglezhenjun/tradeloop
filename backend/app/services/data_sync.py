@@ -185,7 +185,7 @@ def sync_daily_quotes(start_date: str, end_date: str):
                         len(trade_dates),
                         date,
                     )
-            except Exception as exc:
+            except Exception:
                 logger.exception("sync daily quotes failed trade_date=%s", date)
                 db.rollback()
                 time.sleep(2)
@@ -250,7 +250,7 @@ def sync_financial_data():
                         len(ts_codes),
                         total_rows,
                     )
-            except Exception as exc:
+            except Exception:
                 logger.exception("sync financial data failed ts_code=%s", code)
                 db.rollback()
                 time.sleep(2)
@@ -299,7 +299,7 @@ def backfill_financial(db, *, use_lock: bool = True) -> dict:
                         len(ts_codes),
                         total_rows,
                     )
-            except Exception as exc:
+            except Exception:
                 logger.exception("backfill financial failed ts_code=%s", code)
                 db.rollback()
                 time.sleep(2)

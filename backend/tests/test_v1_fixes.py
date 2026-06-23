@@ -8,9 +8,7 @@ V1 修复验证测试
 4. 筛选条件执行失败时返回错误而非静默跳过
 """
 
-import json
 
-import pandas as pd
 import pytest
 from sqlalchemy import create_engine, event, text
 from sqlalchemy.orm import sessionmaker

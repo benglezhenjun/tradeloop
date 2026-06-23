@@ -1,7 +1,7 @@
 """V1_初始表结构
 
 Revision ID: ac271c65f3b7
-Revises: 
+Revises:
 Create Date: 2026-04-05 10:14:00.198651
 
 """

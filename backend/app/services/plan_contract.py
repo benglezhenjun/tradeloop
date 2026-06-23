@@ -6,7 +6,6 @@ import json
 from datetime import datetime, timezone
 from typing import Any
 
-from app.errors import build_error
 from app.models.plan import TradingPlan
 
 MAX_POSITION_RATIO = 0.4

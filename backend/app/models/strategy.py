@@ -12,7 +12,7 @@ ScreeningResult  ← 每次运行的结果（哪些股票入选了）
 
 import json
 
-from sqlalchemy import Boolean, Column, DateTime, Float, ForeignKey, Index, Integer, String, Text, func
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Index, Integer, String, Text, func
 
 from app.database import Base
 
