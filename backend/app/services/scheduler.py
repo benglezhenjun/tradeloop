@@ -20,13 +20,13 @@ def _daily_sync_job():
     """定时任务执行函数。"""
     from app.services.data_sync import try_start_sync
 
-    print("[定时任务] 开始每日数据同步...")
+    logger.info("[定时任务] 开始每日数据同步...")
     try:
         started = try_start_sync()
         if not started:
-            print("[定时任务] 跳过：已有同步任务在运行中")
+            logger.info("[定时任务] 跳过：已有同步任务在运行中")
         else:
-            print("[定时任务] 同步完成")
+            logger.info("[定时任务] 同步完成")
     except Exception:
         logger.exception("daily sync job failed")
 
@@ -46,7 +46,7 @@ def start_scheduler():
         replace_existing=True,
     )
     _scheduler.start()
-    print(f"[调度器] 已启动，每个工作日 {SCHEDULER_HOUR:02d}:{SCHEDULER_MINUTE:02d} 自动同步数据")
+    logger.info(f"[调度器] 已启动，每个工作日 {SCHEDULER_HOUR:02d}:{SCHEDULER_MINUTE:02d} 自动同步数据")
 
 
 def stop_scheduler():
@@ -54,4 +54,4 @@ def stop_scheduler():
     global _scheduler
     if _scheduler and _scheduler.running:
         _scheduler.shutdown()
-        print("[调度器] 已停止")
+        logger.info("[调度器] 已停止")
