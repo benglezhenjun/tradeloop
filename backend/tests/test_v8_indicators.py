@@ -1,6 +1,6 @@
 import pytest
 
-from app.services.indicator_calc import (
+from app.services.technical_indicators import (
     calc_atr,
     calc_boll,
     calc_kdj,

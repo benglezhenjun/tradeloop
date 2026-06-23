@@ -10,7 +10,7 @@ from app.constants import AMOUNT_UNIT_TO_YI, MV_UNIT_TO_YI
 from app.errors import build_error
 from app.models import DailyQuote, StockBasic, StockFinancial
 from app.services.agents.base import _PLAN_SYSTEM_PROMPT, _extract_first_json_payload, _safe_llm_call
-from app.services.indicators import calc_price_stats
+from app.services.price_stats import calc_price_stats
 from app.services.plan_contract import build_manual_fallback, validate_plan_payload
 
 

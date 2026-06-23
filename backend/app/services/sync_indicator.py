@@ -8,7 +8,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from app.config import HISTORY_START_DATE
 from app.models import DailyIndicator, DailyQuote
-from app.services.indicator_calc import calculate_stock_indicators
+from app.services.technical_indicators import calculate_stock_indicators
 
 
 logger = logging.getLogger(__name__)

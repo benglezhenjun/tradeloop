@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from app.constants import AMOUNT_UNIT_TO_YI, MV_UNIT_TO_YI
 from app.models import DailyQuote, StockBasic, StockFinancial
 from app.services.agents.base import _safe_llm_call
-from app.services.indicators import calc_price_stats
+from app.services.price_stats import calc_price_stats
 
 
 def run_stock_agent(db: Session, ts_code: str) -> str:
