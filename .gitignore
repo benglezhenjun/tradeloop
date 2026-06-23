@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+.uv/
+.pytest_cache/
+
+# 本地配置（含密钥，禁止入库）
+config/local.toml
+.env*
+!.env.example
+*.local
+
+# 数据库（真库不入库；仅放行合成样例库）
+data/*.db
+data/*.db-journal
+data/*.db-shm
+data/*.db-wal
+!data/sample.db
+
+# 日志
+*.log
+logs/
+
+# 前端
+frontend/node_modules/
+frontend/dist/
+frontend/.cache/
+
+# AI 协作 / 临时
+.codex-tmp/
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db

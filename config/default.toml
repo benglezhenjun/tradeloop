@@ -1,0 +1,43 @@
+# =============================================
+# 默认配置文件
+# 这个文件会提交到 Git，只放"公开的"默认值
+# 私密信息（token、API key）放在 local.toml
+# =============================================
+
+[database]
+# 数据库文件位置（相对于项目根目录）
+path = "data/stock.db"
+
+[tushare]
+# Tushare token 请填写在 config/local.toml 里（那个文件不会上传到 Git）
+token = ""
+
+[scheduler]
+# 每天自动更新数据的时间（交易日收盘后）
+daily_sync_hour = 15
+daily_sync_minute = 35
+
+[screening]
+# 默认筛选参数
+default_amount_threshold = 2000000000   # 成交额下限：20亿（元）
+default_market_cap_threshold = 10000000000  # 市值下限：100亿（元）
+default_amount_rank_top = 100           # 成交额排名前N
+default_ma20_deviation_max = 0.06       # MA20偏离上限：6%
+
+[data]
+# 首次导入历史数据的起始日期
+history_start_date = "20140101"
+backfill_sleep = 0.35
+
+[llm]
+# LLM 供应商标签（仅用于前端展示，不影响实际调用）
+provider = "deepseek"
+# 接口地址 —— 切换供应商只需改这三行，代码不用动
+# DeepSeek:  base_url = "https://api.deepseek.com"  model = "deepseek-chat"
+# Kimi:      base_url = "https://api.moonshot.cn/v1" model = "moonshot-v1-8k"
+# Ollama:    base_url = "http://localhost:11434/v1"  model = "qwen3.5:9b"
+# LM Studio: base_url = "http://localhost:1234/v1"   model = (LM Studio 里的模型名)
+base_url = "https://api.deepseek.com"
+model = "deepseek-chat"
+# api_key 填写在 local.toml 里（那个文件不会上传到 Git）
+api_key = ""
