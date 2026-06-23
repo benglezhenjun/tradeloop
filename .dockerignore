@@ -1,0 +1,13 @@
+**/.git
+**/.venv
+**/node_modules
+**/dist
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+**/*.log
+.codex-tmp
+docs
+config/local.toml
+data/*.db
+!data/sample.db

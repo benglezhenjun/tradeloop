@@ -8,6 +8,7 @@ V8 主要变化：
 """
 
 import logging
+import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -56,8 +57,11 @@ async def lifespan(app: FastAPI):
 
     from app.services.scheduler import start_scheduler
 
-    start_scheduler()
-    logger.info("系统启动完成，访问 http://localhost:8000/docs 查看 API 文档。")
+    if os.getenv("TRADELOOP_ENABLE_SCHEDULER", "1") == "1":
+        start_scheduler()
+        logger.info("系统启动完成，访问 http://localhost:8000/docs 查看 API 文档。")
+    else:
+        logger.info("调度器已禁用（TRADELOOP_ENABLE_SCHEDULER=0），系统启动完成。")
     yield
 
     from app.services.scheduler import stop_scheduler
