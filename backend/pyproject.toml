@@ -1,9 +1,11 @@
 [project]
-name = "stock-assistant-backend"
-version = "0.1.0"
-description = "Add your description here"
+name = "tradeloop-backend"
+version = "8.0.0"
+description = "TradeLoop（知行盘）— 本地化 A 股交易辅助系统后端：行情/选股/AI 分析/交易复盘"
 readme = "README.md"
 requires-python = ">=3.12"
+authors = [{ name = "<your-name>" }]
+license = { text = "MIT" }
 dependencies = [
     "alembic>=1.18.4",
     "apscheduler>=3.10",
@@ -14,6 +16,10 @@ dependencies = [
     "tushare>=1.4.29",
     "uvicorn>=0.43.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/<your-username>/tradeloop"
+Repository = "https://github.com/<your-username>/tradeloop"
 
 [dependency-groups]
 dev = [

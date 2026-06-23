@@ -1,48 +1,25 @@
-# frontend
+# TradeLoop · 前端
 
-This template should help get you started developing with Vue 3 in Vite.
+Vue 3 + TypeScript + Pinia + Element Plus + ECharts + Vite。
 
-## Recommended IDE Setup
+## 环境
+- Node ≥ 20.19
+- [pnpm](https://pnpm.io) 10
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Recommended Browser Setup
-
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
+## 快速开始
+```bash
+cd frontend
+pnpm install
+pnpm dev          # 开发服务器（默认 http://localhost:5173）
 ```
 
-### Compile and Hot-Reload for Development
+## 配置
+- 后端地址通过环境变量 `VITE_API_URL` 读取，开发默认 `http://localhost:8000`。
+- 可在 `frontend/.env.development` 覆盖。
 
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
+## 常用命令
+```bash
+pnpm type-check   # 类型检查
+pnpm build        # 生产构建
+pnpm lint         # 代码检查（本地，带自动修复）
 ```
