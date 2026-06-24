@@ -4,11 +4,17 @@ title = "tradeloop gitleaks config"
 useDefault = true
 
 [allowlist]
-description = "忽略依赖与构建产物，避免第三方文件误报"
+description = "忽略依赖与构建产物 + 单元测试里的假凭证夹具，避免误报"
 paths = [
   '''\.venv/''',
   '''node_modules/''',
   '''frontend/dist/''',
   '''uv\.lock''',
   '''pnpm-lock\.yaml''',
+]
+# backend/tests/test_credentials.py 用的占位假密钥（高熵会触发 generic-api-key）。
+# 只放行这两个已核实的假串，文件本身仍全量扫描——将来真混入密钥仍会被抓。
+regexes = [
+  '''a11a1234567890f7c2''',
+  '''sk-abcdefgh''',
 ]
