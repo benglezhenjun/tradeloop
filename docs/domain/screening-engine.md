@@ -47,7 +47,7 @@ flowchart TD
     C --> D["condition.evaluate(df, db, params)<br/>→ 每只股票 True/False"]
     D --> E["mask = mask AND 条件掩码<br/>（AND 关系）"]
     E --> C
-    C -->|全部条件跑完| F[df[mask] 命中候选]
+    C -->|全部条件跑完| F["df[mask] 命中候选"]
     F --> G[保存 StrategyRun 运行记录<br/>+ ScreeningResult 结果快照]
     G --> H[返回 candidates + 耗时 + 命中数]
 ```

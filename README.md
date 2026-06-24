@@ -129,9 +129,9 @@ pnpm dev                                               # http://localhost:5173
 7.8GB 的真实数据库不随仓库分发。三种获取数据的方式：
 
 1. **合成演示库（最快）**：仓库自带 `data/sample.db`（虚构数据），`cp data/sample.db data/stock.db` 即可开箱看效果。
-2. **小样本真实数据**：配好自己的 Tushare token，运行
+2. **小样本真实数据**：配好自己的 Tushare token（设置页或 `config/local.toml`），在仓库根目录运行
    ```bash
-   uv run python scripts/seed_demo.py --stocks 600519.SH,000001.SZ --start 20250101 --end 20251231
+   (cd backend && uv run python ../scripts/seed_demo.py --stocks 600519.SH,000001.SZ --start 20250101 --end 20251231)
    ```
 3. **完整历史**：配 token 后触发完整回填（约 5000 只 × 多年，耗时较长，需相应 Tushare 积分）。
 
@@ -161,11 +161,12 @@ tradeloop/
 
 ## 测试
 ```bash
-cd backend && uv run python -m pytest tests/ -q      # 后端单测/契约
-cd backend && uv run ruff check .
-cd frontend && pnpm type-check && pnpm build
-cd frontend && pnpm test                             # vitest 前端单测
-cd frontend && pnpm test:e2e                          # Playwright 烟测（首次需 playwright install chromium）
+# 在仓库根目录执行；每行用子 shell 包裹，互不影响当前目录
+(cd backend && uv run python -m pytest tests/ -q)     # 后端单测/契约
+(cd backend && uv run ruff check .)
+(cd frontend && pnpm type-check && pnpm build)
+(cd frontend && pnpm test)                            # vitest 前端单测
+(cd frontend && pnpm test:e2e)                        # Playwright 烟测（首次需 playwright install chromium）
 ```
 
 ## 一键演示

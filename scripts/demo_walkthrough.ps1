@@ -24,8 +24,13 @@ $stock = Join-Path $RepoRoot 'data/stock.db'
 if (-not (Test-Path $sample)) {
     throw "缺少合成样例库 $sample（可运行 backend 下的 scripts/generate_sample_db.py 生成）"
 }
-Copy-Item $sample $stock -Force
-Write-Host "[1/4] 演示库就位：$stock" -ForegroundColor Green
+# 仅当工作库不存在时才用样例库初始化——避免覆盖你已有的数据/凭证（stock.db 可能存了 API key）
+if (Test-Path $stock) {
+    Write-Host "[1/4] 已存在 data/stock.db，保留不覆盖（如需重置演示数据请手动删除它）" -ForegroundColor Yellow
+} else {
+    Copy-Item $sample $stock
+    Write-Host "[1/4] 演示库就位：$stock" -ForegroundColor Green
+}
 
 # 2) 起后端（新窗口）
 Start-Process pwsh -ArgumentList @(

@@ -95,7 +95,7 @@ def recalculate_position(db: Session, ts_code: str, *, commit: bool = True) -> P
     trades = (
         db.query(TradeRecord)
         .filter(TradeRecord.ts_code == ts_code)
-        .order_by(TradeRecord.trade_date.asc(), TradeRecord.id.asc())
+        .order_by(TradeRecord.trade_date.asc(), TradeRecord.trade_time.asc(), TradeRecord.id.asc())
         .all()
     )
     position = db.query(Position).filter(Position.ts_code == ts_code).first()
@@ -152,7 +152,7 @@ def get_position_detail(db: Session, ts_code: str) -> dict[str, Any] | None:
     trades = (
         db.query(TradeRecord)
         .filter(TradeRecord.ts_code == ts_code)
-        .order_by(TradeRecord.trade_date.asc(), TradeRecord.id.asc())
+        .order_by(TradeRecord.trade_date.asc(), TradeRecord.trade_time.asc(), TradeRecord.id.asc())
         .all()
     )
     return {
