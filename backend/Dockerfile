@@ -20,10 +20,12 @@ RUN pip install --no-cache-dir uv
 COPY backend/pyproject.toml backend/uv.lock ./
 RUN uv sync --frozen --no-dev
 
-# 再拷代码 + 配置 + 合成库（保持与仓库一致的目录层级：/app/backend, /app/config, /app/data）
+# 再拷代码 + 配置 + 合成库
+# 样例库放 /app/seed（非数据卷挂载点），避免被 compose 的 named volume 遮蔽；
+# 运行库 /app/data 由 entrypoint 从 seed 初始化，并可挂 named volume 持久化。
 COPY backend /app/backend
 COPY config /app/config
-COPY data/sample.db /app/data/sample.db
+COPY data/sample.db /app/seed/sample.db
 COPY docker/backend-entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh \

@@ -12,6 +12,9 @@ services:
       - "127.0.0.1:8000:8000"
     environment:
       - TRADELOOP_ENABLE_SCHEDULER=0
+    # 持久化运行库（含同步数据与设置页填写的密钥），容器重建不丢
+    volumes:
+      - tradeloop_data:/app/data
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')"]
       interval: 10s
@@ -30,3 +33,6 @@ services:
     depends_on:
       backend:
         condition: service_healthy
+
+volumes:
+  tradeloop_data:
