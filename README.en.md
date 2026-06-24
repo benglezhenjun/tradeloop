@@ -4,11 +4,11 @@
 
 **A local-first A-share trading research workbench — the full loop from market overview, screening and AI analysis to journaling, positions and AI trade review.**
 
-[![CI](https://github.com/<your-username>/tradeloop/actions/workflows/ci.yml/badge.svg)](https://github.com/<your-username>/tradeloop/actions/workflows/ci.yml)
+[![CI](https://github.com/benglezhenjun/tradeloop/actions/workflows/ci.yml/badge.svg)](https://github.com/benglezhenjun/tradeloop/actions/workflows/ci.yml)
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 ![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
 ![Vue](https://img.shields.io/badge/Vue-3-4FC08D?logo=vuedotjs&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-230%20passed-brightgreen)
+![Tests](https://img.shields.io/badge/tests-293%20passed-brightgreen)
 
 [中文](./README.md) · [Disclaimer](./FINANCIAL_DISCLAIMER.md) · [Data Notice](./DATA_LICENSE.md) · [Privacy](./PRIVACY.md)
 
@@ -82,7 +82,7 @@ Public defaults in `config/default.toml`; secrets in `config/local.toml` (git-ig
 
 ## Testing
 ```bash
-cd backend && uv run python -m pytest tests/ -q   # 230 passed
+cd backend && uv run python -m pytest tests/ -q   # 293 passed
 cd frontend && pnpm type-check && pnpm build
 ```
 

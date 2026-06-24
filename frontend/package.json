@@ -2,11 +2,11 @@
   "name": "tradeloop-frontend",
   "version": "8.0.0",
   "description": "TradeLoop（知行盘）前端：Vue3 + Pinia + Element Plus + ECharts",
-  "author": "<your-name>",
+  "author": "benglezhenjun",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/<your-username>/tradeloop"
+    "url": "https://github.com/benglezhenjun/tradeloop"
   },
   "private": true,
   "type": "module",

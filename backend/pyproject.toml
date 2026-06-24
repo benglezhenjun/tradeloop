@@ -4,7 +4,7 @@ version = "8.0.0"
 description = "TradeLoop（知行盘）— 本地化 A 股交易辅助系统后端：行情/选股/AI 分析/交易复盘"
 readme = "README.md"
 requires-python = ">=3.12"
-authors = [{ name = "<your-name>" }]
+authors = [{ name = "benglezhenjun" }]
 license = { text = "MIT" }
 dependencies = [
     "alembic>=1.18.4",
@@ -18,8 +18,8 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/<your-username>/tradeloop"
-Repository = "https://github.com/<your-username>/tradeloop"
+Homepage = "https://github.com/benglezhenjun/tradeloop"
+Repository = "https://github.com/benglezhenjun/tradeloop"
 
 [dependency-groups]
 dev = [
