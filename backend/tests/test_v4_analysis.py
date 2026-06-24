@@ -50,23 +50,24 @@ def insert_quote(db, ts_code: str, trade_date: str, pct_chg: float = 1.0,
 # ---------------------------------------------------------------------------
 
 class TestLlmConfigured:
+    # llm 已改为经凭证层读取（DB 覆盖 TOML），故 patch credentials.llm_api_key
     def test_empty_api_key_returns_false(self):
-        with patch("app.services.llm.LLM_API_KEY", ""):
+        with patch("app.credentials.llm_api_key", return_value=""):
             from app.services import llm
             assert llm.is_configured() is False
 
     def test_whitespace_key_returns_false(self):
-        with patch("app.services.llm.LLM_API_KEY", "   "):
+        with patch("app.credentials.llm_api_key", return_value="   "):
             from app.services import llm
             assert llm.is_configured() is False
 
     def test_valid_key_returns_true(self):
-        with patch("app.services.llm.LLM_API_KEY", "sk-test-key"):
+        with patch("app.credentials.llm_api_key", return_value="sk-test-key"):
             from app.services import llm
             assert llm.is_configured() is True
 
     def test_get_status_returns_expected_fields(self):
-        with patch("app.services.llm.LLM_API_KEY", "sk-test"):
+        with patch("app.credentials.llm_api_key", return_value="sk-test"):
             from app.services import llm
             status = llm.get_status()
             assert "configured" in status

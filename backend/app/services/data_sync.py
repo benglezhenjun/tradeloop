@@ -19,7 +19,8 @@ import tushare as ts
 from alembic import command
 from alembic.config import Config
 
-from app.config import BACKFILL_SLEEP, HISTORY_START_DATE, TUSHARE_TOKEN
+from app import credentials
+from app.config import BACKFILL_SLEEP, HISTORY_START_DATE
 from app.database import SessionLocal
 from app.models import DailyQuote, StockBasic, StockFinancial
 from app.services.market_sentiment import sync_market_sentiment_daily
@@ -75,9 +76,10 @@ def try_start_sync() -> bool:
 
 
 def _get_api():
-    if not TUSHARE_TOKEN:
-        raise ValueError("Tushare token 未配置，请先在 config/local.toml 中填写。")
-    return ts.pro_api(TUSHARE_TOKEN)
+    token = credentials.tushare_token()
+    if not token:
+        raise ValueError("Tushare token 未配置，请在设置页填写，或在 config/local.toml 中填写 [tushare] token。")
+    return ts.pro_api(token)
 
 
 @contextmanager

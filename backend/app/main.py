@@ -18,6 +18,7 @@ from app.constants import APP_VERSION
 from app.observability import request_context_middleware
 from app.api import (
     analysis,
+    credentials as credentials_api,
     dashboard,
     data,
     kline,
@@ -50,11 +51,14 @@ async def lifespan(app: FastAPI):
     from app.services.strategy import init_builtin_strategies
     from app.services.user_config import ensure_default_configs
 
+    from app import credentials
+
     db = SessionLocal()
     try:
         init_builtin_strategies(db)
         ensure_default_configs(db)
-        logger.info("内置策略与默认配置已初始化")
+        credentials.refresh_from_db(db)  # 把前端存过的 key 载入进程缓存，使其生效
+        logger.info("内置策略、默认配置与凭证已初始化")
     finally:
         db.close()
 
@@ -105,4 +109,5 @@ app.include_router(trade.router, prefix="/api")
 app.include_router(position.router, prefix="/api")
 app.include_router(review.router, prefix="/api")
 app.include_router(user_config.router, prefix="/api")
+app.include_router(credentials_api.router)
 app.include_router(system.router)

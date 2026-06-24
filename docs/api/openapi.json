@@ -80,6 +80,56 @@
         "title": "ConfigUpdate",
         "type": "object"
       },
+      "CredentialUpdate": {
+        "properties": {
+          "llm_api_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Llm Api Key"
+          },
+          "llm_base_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Llm Base Url"
+          },
+          "llm_model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Llm Model"
+          },
+          "tushare_token": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tushare Token"
+          }
+        },
+        "title": "CredentialUpdate",
+        "type": "object"
+      },
       "GroupCreate": {
         "properties": {
           "description": {
@@ -898,6 +948,84 @@
           }
         },
         "summary": "Set Config"
+      }
+    },
+    "/api/credentials": {
+      "get": {
+        "description": "返回打码后的凭证状态（绝不返回完整 key）。",
+        "operationId": "get_credentials_api_credentials_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Get Credentials",
+        "tags": [
+          "凭证"
+        ]
+      },
+      "put": {
+        "description": "保存凭证到本地 DB，并即时生效（无需重启）。",
+        "operationId": "update_credentials_api_credentials_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CredentialUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Update Credentials",
+        "tags": [
+          "凭证"
+        ]
+      }
+    },
+    "/api/credentials/check": {
+      "post": {
+        "description": "实时联网校验两类凭证，返回各自 ok/reason。",
+        "operationId": "check_credentials_api_credentials_check_post",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Check Credentials",
+        "tags": [
+          "凭证"
+        ]
       }
     },
     "/api/dashboard/breadth": {

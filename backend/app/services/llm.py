@@ -9,12 +9,14 @@ LLM 客户端封装 (V4)
 
 from openai import OpenAI
 
-from app.config import LLM_API_KEY, LLM_BASE_URL, LLM_MODEL, LLM_PROVIDER
+from app import credentials
+from app.config import LLM_PROVIDER
 
 
 def is_configured() -> bool:
     """检查 LLM 是否已配置（api_key 不为空）。"""
-    return bool(LLM_API_KEY and LLM_API_KEY.strip())
+    key = credentials.llm_api_key()
+    return bool(key and key.strip())
 
 
 def get_status() -> dict:
@@ -22,8 +24,8 @@ def get_status() -> dict:
     return {
         "configured": is_configured(),
         "provider": LLM_PROVIDER,
-        "model": LLM_MODEL,
-        "base_url": LLM_BASE_URL,
+        "model": credentials.llm_model(),
+        "base_url": credentials.llm_base_url(),
     }
 
 
@@ -31,11 +33,11 @@ def _get_client() -> OpenAI:
     """返回配置好的 OpenAI 兼容客户端。"""
     if not is_configured():
         raise ValueError(
-            "LLM 未配置。请在 config/local.toml 中填写 [llm] api_key。"
+            "LLM 未配置。请在设置页填写 LLM api_key，或在 config/local.toml 中填写 [llm] api_key。"
         )
     return OpenAI(
-        api_key=LLM_API_KEY,
-        base_url=LLM_BASE_URL,
+        api_key=credentials.llm_api_key(),
+        base_url=credentials.llm_base_url(),
         timeout=120.0,
     )
 
@@ -51,7 +53,7 @@ def chat(messages: list[dict], max_tokens: int = 1000) -> str:
     """
     client = _get_client()
     response = client.chat.completions.create(
-        model=LLM_MODEL,
+        model=credentials.llm_model(),
         messages=messages,  # type: ignore[arg-type]
         max_tokens=max_tokens,
         temperature=0.3,    # 分析类任务偏低温度，减少幻觉
