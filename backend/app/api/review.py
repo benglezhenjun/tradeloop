@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
+from app.api.envelope import list_envelope
 from app.database import get_db
 from app.errors import raise_service_error
 from app.services import pattern as pattern_service
@@ -38,7 +39,7 @@ def list_reviews(ts_code: str | None = Query(None), db: Session = Depends(get_db
     result = review_service.list_reviews(db, ts_code=ts_code)
     if "error" in result:
         raise_service_error(result)
-    return result
+    return list_envelope(result["reviews"])
 
 
 @router.get("/stats")
@@ -54,7 +55,7 @@ def list_patterns(status: str | None = Query(None), db: Session = Depends(get_db
     result = pattern_service.list_patterns(db, status=status)
     if "error" in result:
         raise_service_error(result)
-    return result
+    return list_envelope(result["patterns"])
 
 
 @router.post("/patterns/refresh")
@@ -66,7 +67,7 @@ def refresh_patterns(db: Session = Depends(get_db)):
     result = pattern_service.save_patterns(db, agent_result["patterns"])
     if "error" in result:
         raise_service_error(result)
-    return result
+    return list_envelope(result["patterns"])
 
 
 @router.patch("/patterns/{pattern_id}/status")

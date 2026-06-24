@@ -16,6 +16,8 @@ from sqlalchemy import text
 
 
 def _build_app(db):
+    from app.api import analysis as analysis_api
+    from app.api import review as review_api
     from app.api import strategies as strategies_api
     from app.api import watchlist as watchlist_api
     from app.database import get_db
@@ -23,6 +25,8 @@ def _build_app(db):
     app = FastAPI()
     app.include_router(strategies_api.router)
     app.include_router(watchlist_api.router)
+    app.include_router(analysis_api.router, prefix="/api/analysis")
+    app.include_router(review_api.router, prefix="/api")
 
     def override_get_db():
         yield db
@@ -42,6 +46,9 @@ LIST_ENDPOINTS = [
     "/api/strategies",
     "/api/watchlist/groups",
     "/api/watchlist/stocks",
+    "/api/analysis/reports",
+    "/api/review",
+    "/api/review/patterns",
 ]
 
 

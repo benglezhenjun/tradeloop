@@ -81,8 +81,8 @@ def test_daily_report_success_saves_and_returns(client, db):
 
     # 已落库，可在历史列表查到
     listed = client.get("/api/analysis/reports").json()
-    assert len(listed) == 1
-    assert listed[0]["report_type"] == "daily"
+    assert listed["total"] == 1
+    assert listed["items"][0]["report_type"] == "daily"
 
 
 # ---- analyze_stock ----
@@ -113,11 +113,11 @@ def test_list_reports_filter_by_type(client, db):
     _seed_report(db, report_type="stock", ts_code="600000.SH")
 
     all_reports = client.get("/api/analysis/reports").json()
-    assert len(all_reports) == 2
+    assert all_reports["total"] == 2
 
     stock_only = client.get("/api/analysis/reports", params={"report_type": "stock"}).json()
-    assert len(stock_only) == 1
-    assert stock_only[0]["ts_code"] == "600000.SH"
+    assert stock_only["total"] == 1
+    assert stock_only["items"][0]["ts_code"] == "600000.SH"
 
 
 def test_get_report_detail(client, db):

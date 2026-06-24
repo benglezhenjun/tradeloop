@@ -53,7 +53,7 @@ export const useReviewStore = defineStore('review', () => {
     clearError()
     try {
       const res = await listReviewsApi(tsCode)
-      reviews.value = res.data.reviews ?? []
+      reviews.value = res.data.items ?? []
       return reviews.value
     } catch (err: unknown) {
       error.value = getErrorMessage(err, '加载复盘列表失败')
@@ -146,7 +146,7 @@ export const useReviewStore = defineStore('review', () => {
     clearError()
     try {
       const res = await listPatternsApi(status)
-      patterns.value = res.data.patterns ?? []
+      patterns.value = res.data.items ?? []
       return patterns.value
     } catch (err: unknown) {
       error.value = getErrorMessage(err, '加载行为模式失败')
@@ -161,7 +161,7 @@ export const useReviewStore = defineStore('review', () => {
     clearError()
     try {
       const res = await refreshPatternsApi()
-      patterns.value = res.data.patterns ?? []
+      patterns.value = res.data.items ?? []
       return patterns.value
     } catch (err: unknown) {
       error.value = getErrorMessage(err, '刷新行为模式失败')

@@ -15,6 +15,7 @@ from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
+from app.api.envelope import list_envelope
 from app.database import get_db
 from app.models.analysis import AnalysisReport
 from app.services import llm
@@ -147,10 +148,12 @@ def list_reports(report_type: str | None = None, limit: int = 20, db: Session = 
         q = q.filter(AnalysisReport.report_type == report_type)
 
     rows = q.limit(limit).all()
-    return [
-        {"id": r.id, "report_type": r.report_type, "ts_code": r.ts_code, "generated_at": r.generated_at}
-        for r in rows
-    ]
+    return list_envelope(
+        [
+            {"id": r.id, "report_type": r.report_type, "ts_code": r.ts_code, "generated_at": r.generated_at}
+            for r in rows
+        ]
+    )
 
 
 @router.get("/reports/{report_id}")

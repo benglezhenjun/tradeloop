@@ -5,6 +5,7 @@
  */
 import axios from 'axios'
 
+import type { ReportListItem } from '@/types/analysis'
 import type { ListEnvelope } from '@/types/common'
 import type { Position, PositionDetail, PositionListFilter, PositionSummary } from '@/types/position'
 import type {
@@ -91,7 +92,9 @@ export const generateDailyReport = () => http.post('/api/analysis/daily_report',
 export const analyzeStock = (tsCode: string) =>
   http.post(`/api/analysis/stock/${tsCode}`, null, { timeout: 120_000 })
 export const listReports = (reportType?: string) =>
-  http.get('/api/analysis/reports', { params: reportType ? { report_type: reportType } : {} })
+  http.get<ListEnvelope<ReportListItem>>('/api/analysis/reports', {
+    params: reportType ? { report_type: reportType } : {},
+  })
 export const getReport = (id: number) => http.get(`/api/analysis/reports/${id}`)
 
 // ---- 交易计划 (V5) ----
@@ -124,7 +127,7 @@ export const recalculatePosition = (tsCode: string) =>
 export const generateReview = (tsCode: string) =>
   http.post<TradeReview>(`/api/review/generate/${tsCode}`, null, { timeout: 120_000 })
 export const listReviews = (tsCode?: string) =>
-  http.get<{ reviews: TradeReview[] }>('/api/review', { params: tsCode ? { ts_code: tsCode } : {} })
+  http.get<ListEnvelope<TradeReview>>('/api/review', { params: tsCode ? { ts_code: tsCode } : {} })
 export const getReview = (id: number) => http.get<TradeReview>(`/api/review/${id}`)
 export const updateReviewNotes = (id: number, notes: string) =>
   http.put<TradeReview>(`/api/review/${id}/notes`, { notes })
@@ -133,9 +136,9 @@ export const getReviewStats = () => http.get<ReviewStats>('/api/review/stats')
 
 // ---- 行为模式 (V7) ----
 export const listPatterns = (status?: string) =>
-  http.get<{ patterns: BehaviorPattern[] }>('/api/review/patterns', { params: status ? { status } : {} })
+  http.get<ListEnvelope<BehaviorPattern>>('/api/review/patterns', { params: status ? { status } : {} })
 export const refreshPatterns = () =>
-  http.post<{ patterns: BehaviorPattern[] }>('/api/review/patterns/refresh', null, { timeout: 120_000 })
+  http.post<ListEnvelope<BehaviorPattern>>('/api/review/patterns/refresh', null, { timeout: 120_000 })
 export const updatePatternStatus = (id: number, status: string) =>
   http.patch<BehaviorPattern>(`/api/review/patterns/${id}/status`, { status })
 

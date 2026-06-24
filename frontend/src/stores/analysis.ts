@@ -40,7 +40,7 @@ export const useAnalysisStore = defineStore('analysis', () => {
     loadingHistory.value = true
     try {
       const res = await listReports(reportType)
-      historyList.value = res.data as ReportListItem[]
+      historyList.value = res.data.items
     } finally {
       loadingHistory.value = false
     }

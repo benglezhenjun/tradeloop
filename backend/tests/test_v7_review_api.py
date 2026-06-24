@@ -48,7 +48,8 @@ class TestReviewApi:
         response = client.get("/api/review")
 
         assert response.status_code == 200
-        assert len(response.json()["reviews"]) == 1
+        assert response.json()["total"] == 1
+        assert len(response.json()["items"]) == 1
 
     def test_get_review_detail(self, client, db):
         review = create_review_row(db)
@@ -96,7 +97,8 @@ class TestReviewApi:
         response = client.get("/api/review/patterns")
 
         assert response.status_code == 200
-        assert len(response.json()["patterns"]) == 1
+        assert response.json()["total"] == 1
+        assert len(response.json()["items"]) == 1
 
     @patch("app.services.agents.review.run_pattern_agent")
     def test_refresh_patterns(self, mock_run_pattern_agent, client, db):
@@ -131,7 +133,7 @@ class TestReviewApi:
         response = client.post("/api/review/patterns/refresh")
 
         assert response.status_code == 200
-        assert response.json()["patterns"][0]["title"] == "执行稳定"
+        assert response.json()["items"][0]["title"] == "执行稳定"
 
     def test_update_pattern_status(self, client, db):
         pattern = create_pattern_row(db)
