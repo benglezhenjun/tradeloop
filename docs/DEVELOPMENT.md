@@ -11,12 +11,10 @@
 
 ## 文档入口
 
-- `docs/README.md`：文档总索引
-- `docs/V8_架构设计与开发计划.md`：V8 架构与设计
-- `docs/plans/2026-04-07-v8-upgrade.md`：V8 执行计划
-- `docs/项目全景说明书.md`：项目全景与功能总览
-
-开始新任务前，优先阅读对应版本文档，再进入代码。
+- `README.md`（仓库根）：项目介绍、快速开始、架构图
+- `docs/domain/`：交易闭环·费用·持仓、选股引擎等金融逻辑设计文档（中英双语）
+- `docs/api/`：OpenAPI 契约
+- `CHANGELOG.md`：版本演进
 
 ## 开发原则
 
@@ -103,9 +101,10 @@
 
 ## Token / 凭证规则
 
-- 第三方 token 只从配置文件读取，不在代码里硬编码。
-- 需要 token 的 SDK，初始化时显式传入配置值，不依赖环境变量残留作为隐式 fallback。
-- Tushare 统一使用 `tushare.pro_api(TUSHARE_TOKEN)`，禁止无参调用。
+- 第三方 token 不在代码里硬编码；运行时统一经凭证层 `app/credentials.py` 解析：
+  设置页填写存入本地 DB（覆盖 `config/local.toml`），保存即生效。
+- 凭证键禁止经通用 `/api/config/{key}` 读写（会绕过打码），只走 `/api/credentials`。
+- 需要 token 的 SDK 初始化时显式传入 `credentials.tushare_token()`，禁止无参调用。
 
 ## V8 同步约定
 
@@ -126,7 +125,7 @@
 
 ### 后端
 
-- 运行命令：`cd backend && uv run pytest tests/ -v`
+- 运行命令：`cd backend && uv run python -m pytest tests/ -q`（务必 `python -m`）
 - 新增功能优先走红绿测试闭环：先写失败测试，再写最小实现，再跑回归。
 
 ### 前端
@@ -163,4 +162,3 @@
 ## 备注
 
 - 如果任务横跨多个模块，优先拆成可验证的小闭环。
-- 如需追溯旧版本设计，优先阅读 `docs/` 下对应版本的设计、验收与执行计划文档。

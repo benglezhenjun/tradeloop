@@ -1,48 +1,12 @@
-# 项目文档目录
+# 文档目录 · Docs
 
-这个目录用于维护 TradeLoop · 知行盘的设计、验收、开发计划和历史版本资料。
+TradeLoop · 知行盘 的文档。完整项目介绍见仓库根 [README](../README.md) / [English](../README.en.md)。
 
-## 当前优先阅读
+| 内容 | 链接 |
+|---|---|
+| **Domain 设计文档**（图文讲金融逻辑：交易闭环·费用·持仓、选股引擎；中英双语） | [domain/](./domain/README.md) |
+| **API 契约**（OpenAPI 3，机器可读 + 防漂移说明） | [api/](./api/README.md) |
+| **开发说明**（本地工程约定） | [DEVELOPMENT.md](./DEVELOPMENT.md) |
+| **界面截图** | [screenshots/](./screenshots/) |
 
-### V8 主文档
-
-- `V8_架构设计与开发计划.md`
-  - V8 数据库全面升级的设计基线
-- `plans/2026-04-07-v8-upgrade.md`
-  - V8 具体执行计划
-- `项目全景说明书.md`
-  - 项目功能、架构和业务闭环总览
-
-## 历史版本文档
-
-### V7
-
-- `V7_架构设计与开发计划.md`
-- `V7_验收与回归指南.md`
-- `V7_执行顺序与提交建议.md`
-
-- `V2_打磨完成进度书.md`
-- `V3_开发计划.md`
-- `V4_开发计划.md`
-- `V5_开发计划.md`
-- `V5_手动验收指南.md`
-- `V5_打磨完成进度书.md`
-- `V6_架构设计与重构计划.md`
-- `V6_验收与回归指南.md`
-- `V6_执行顺序与提交建议.md`
-
-## 归档目录
-
-- `archive/V5/README.md`
-- `archive/V5/review_resolution.md`
-- `archive/V5/change_manifest.json`
-- `archive/V5/verification.md`
-- `archive/ai-collab/`
-  - 历史 AI 协作提示词、转交说明和执行辅助材料
-
-## 使用约定
-
-1. 进入某个版本开发前，先读该版本的开发计划和验收文档。
-2. 进入版本收尾、复盘或交接时，再读对应的归档材料。
-3. 长期有效的工程规则看 `docs/DEVELOPMENT.md`。
-4. 版本级执行顺序、回归步骤和验收清单优先看 `docs/` 下对应版本文档。
+> 免责声明：本系统仅为个人交易辅助与学习工具，不构成投资建议。见 [FINANCIAL_DISCLAIMER.md](../FINANCIAL_DISCLAIMER.md)。
