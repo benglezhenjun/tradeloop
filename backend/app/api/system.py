@@ -2,6 +2,7 @@
 
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
@@ -11,7 +12,15 @@ from app.database import get_db
 router = APIRouter(tags=["系统"])
 
 
-@router.get("/api/health")
+class HealthStatus(BaseModel):
+    """存活探针响应（带类型契约，体现在 OpenAPI 文档里）。"""
+
+    status: str
+    version: str
+    message: str
+
+
+@router.get("/api/health", response_model=HealthStatus)
 def health_check():
     """存活探针：进程是否在运行（不查数据库）。"""
     return {
