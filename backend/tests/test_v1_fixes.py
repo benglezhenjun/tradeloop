@@ -10,37 +10,7 @@ V1 修复验证测试
 
 
 import pytest
-from sqlalchemy import create_engine, event, text
-from sqlalchemy.orm import sessionmaker
-
-# 使用内存数据库，与正式库完全隔离
-TEST_DATABASE_URL = "sqlite:///:memory:"
-
-
-@pytest.fixture
-def engine():
-    eng = create_engine(TEST_DATABASE_URL, echo=False)
-
-    @event.listens_for(eng, "connect")
-    def _set_pragma(dbapi_connection, _):
-        cur = dbapi_connection.cursor()
-        cur.execute("PRAGMA foreign_keys=ON")
-        cur.close()
-
-    # 必须先 import 所有 model，Base.metadata 才能感知到所有表
-    import app.models  # noqa: F401
-    from app.database import Base
-    Base.metadata.create_all(bind=eng)
-    yield eng
-    eng.dispose()
-
-
-@pytest.fixture
-def db(engine):
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    yield session
-    session.close()
+from sqlalchemy import text
 
 
 # ──────────────────────────────────────────────

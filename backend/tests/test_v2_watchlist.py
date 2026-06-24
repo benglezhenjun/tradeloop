@@ -2,9 +2,7 @@
 V2 watchlist feature tests.
 """
 
-import pytest
-from sqlalchemy import create_engine, event, text
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import text
 
 
 def seed_stock_basic(db, ts_code: str, name: str = "Test Stock", industry: str = "Bank") -> None:
@@ -55,32 +53,6 @@ def seed_daily_quote(
         },
     )
     db.commit()
-
-
-@pytest.fixture
-def engine():
-    eng = create_engine("sqlite:///:memory:", echo=False)
-
-    @event.listens_for(eng, "connect")
-    def _set_pragma(dbapi_connection, _):
-        cur = dbapi_connection.cursor()
-        cur.execute("PRAGMA foreign_keys=ON")
-        cur.close()
-
-    import app.models  # noqa: F401
-    from app.database import Base
-
-    Base.metadata.create_all(bind=eng)
-    yield eng
-    eng.dispose()
-
-
-@pytest.fixture
-def db(engine):
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    yield session
-    session.close()
 
 
 def test_create_group(db):

@@ -12,39 +12,12 @@ V4 LLM 分析测试
 
 from unittest.mock import patch
 
-import pytest
-from sqlalchemy import create_engine, event, text
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import text
 
 
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
-
-@pytest.fixture
-def engine():
-    eng = create_engine("sqlite:///:memory:", echo=False)
-
-    @event.listens_for(eng, "connect")
-    def _set_pragma(dbapi_connection, _):
-        cur = dbapi_connection.cursor()
-        cur.execute("PRAGMA foreign_keys=ON")
-        cur.close()
-
-    import app.models  # noqa: F401
-    from app.database import Base
-    Base.metadata.create_all(bind=eng)
-    yield eng
-    eng.dispose()
-
-
-@pytest.fixture
-def db(engine):
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    yield session
-    session.close()
-
 
 def insert_stock(db, ts_code: str, name: str = "测试股", industry: str = "银行"):
     db.execute(

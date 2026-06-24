@@ -7,39 +7,7 @@ import pandas as pd
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine, event, text
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.pool import StaticPool
-
-
-@pytest.fixture
-def engine():
-    eng = create_engine(
-        "sqlite://",
-        echo=False,
-        connect_args={"check_same_thread": False},
-        poolclass=StaticPool,
-    )
-
-    @event.listens_for(eng, "connect")
-    def _set_pragma(dbapi_connection, _):
-        cur = dbapi_connection.cursor()
-        cur.execute("PRAGMA foreign_keys=ON")
-        cur.close()
-
-    import app.models  # noqa: F401
-    from app.database import Base
-
-    Base.metadata.create_all(bind=eng)
-    yield eng
-    eng.dispose()
-
-
-@pytest.fixture
-def db(engine):
-    session = sessionmaker(bind=engine)()
-    yield session
-    session.close()
+from sqlalchemy import text
 
 
 @pytest.fixture
