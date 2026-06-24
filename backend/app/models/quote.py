@@ -1,6 +1,7 @@
 """日线行情表"""
 
-from sqlalchemy import Column, Float, Index, String
+from sqlalchemy import Float, Index, String
+from sqlalchemy.orm import Mapped, mapped_column
 
 from app.database import Base
 
@@ -14,17 +15,17 @@ class DailyQuote(Base):
 
     __tablename__ = "daily_quote"
 
-    ts_code = Column(String(20), primary_key=True, comment="股票代码")
-    trade_date = Column(String(8), primary_key=True, comment="交易日期 YYYYMMDD")
-    open = Column(Float, comment="开盘价")
-    high = Column(Float, comment="最高价")
-    low = Column(Float, comment="最低价")
-    close = Column(Float, comment="收盘价")
-    vol = Column(Float, comment="成交量（手）")
-    amount = Column(Float, comment="成交额（千元）")
-    pct_chg = Column(Float, comment="涨跌幅（%）")
-    total_mv = Column(Float, comment="总市值（万元）")
-    turnover_rate = Column(Float, comment="换手率（%）")
+    ts_code: Mapped[str] = mapped_column(String(20), primary_key=True, comment="股票代码")
+    trade_date: Mapped[str] = mapped_column(String(8), primary_key=True, comment="交易日期 YYYYMMDD")
+    open: Mapped[float | None] = mapped_column(Float, comment="开盘价")
+    high: Mapped[float | None] = mapped_column(Float, comment="最高价")
+    low: Mapped[float | None] = mapped_column(Float, comment="最低价")
+    close: Mapped[float | None] = mapped_column(Float, comment="收盘价")
+    vol: Mapped[float | None] = mapped_column(Float, comment="成交量（手）")
+    amount: Mapped[float | None] = mapped_column(Float, comment="成交额（千元）")
+    pct_chg: Mapped[float | None] = mapped_column(Float, comment="涨跌幅（%）")
+    total_mv: Mapped[float | None] = mapped_column(Float, comment="总市值（万元）")
+    turnover_rate: Mapped[float | None] = mapped_column(Float, comment="换手率（%）")
 
     __table_args__ = (
         Index("ix_daily_trade_date", "trade_date"),
