@@ -3,10 +3,7 @@ import { defineStore } from 'pinia'
 
 import { generatePlans, getConfig, setConfig } from '@/api/index'
 import type { GeneratePlansManualFallback, GeneratePlansResponse, GeneratePlansSuccess } from '@/types/plan'
-
-function getErrorMessage(error: unknown, fallback: string): string {
-  return error instanceof Error ? error.message : fallback
-}
+import { getErrorMessage } from '@/utils/error'
 
 export const usePlanGenerateStore = defineStore('plan-generate', () => {
   const generateResult = ref<GeneratePlansResponse | null>(null)

@@ -9,6 +9,10 @@ import { usePlanGenerateStore } from '@/stores/planGenerate'
 const appStore = useAppStore()
 const planGenerateStore = usePlanGenerateStore()
 
+// API 基址：与 api/index.ts 的 axios baseURL 同源，避免写死 localhost
+const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const apiDocsUrl = `${apiBaseUrl}/docs`
+
 const syncing = ref(false)
 const capitalInput = ref(0)
 const savingCapital = ref(false)
@@ -226,7 +230,7 @@ onMounted(async () => {
           <code>stock-assistant/data/stock.db</code>
         </el-descriptions-item>
         <el-descriptions-item label="API 文档">
-          <a href="http://localhost:8000/docs" target="_blank" rel="noreferrer">http://localhost:8000/docs</a>
+          <a :href="apiDocsUrl" target="_blank" rel="noreferrer">{{ apiDocsUrl }}</a>
         </el-descriptions-item>
       </el-descriptions>
     </el-card>

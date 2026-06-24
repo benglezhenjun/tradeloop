@@ -3,10 +3,7 @@ import { defineStore } from 'pinia'
 
 import { createPlan, deletePlan, getPlan, listPlans, updatePlan, updatePlanStatus } from '@/api/index'
 import type { PlanCreateData, PlanListFilter, PlanStatus, PlanUpdateData, TradingPlan } from '@/types/plan'
-
-function getErrorMessage(error: unknown, fallback: string): string {
-  return error instanceof Error ? error.message : fallback
-}
+import { getErrorMessage } from '@/utils/error'
 
 export const usePlanStore = defineStore('plan', () => {
   const plans = ref<TradingPlan[]>([])

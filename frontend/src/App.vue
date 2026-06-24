@@ -30,9 +30,11 @@
           </div>
         </el-header>
         <el-main class="app-main">
-          <RouterView v-slot="{ Component, route }">
-            <component :is="Component" :key="route.path" class="tl-fade-in" />
-          </RouterView>
+          <ErrorBoundary>
+            <RouterView v-slot="{ Component, route }">
+              <component :is="Component" :key="route.path" class="tl-fade-in" />
+            </RouterView>
+          </ErrorBoundary>
         </el-main>
       </el-container>
     </el-container>
@@ -46,6 +48,7 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import { RouterView } from 'vue-router'
 
 import AppSidebar from '@/components/AppSidebar.vue'
+import ErrorBoundary from '@/components/ErrorBoundary.vue'
 import { useAppStore } from '@/stores/app'
 
 const appStore = useAppStore()

@@ -4,10 +4,7 @@ import { defineStore } from 'pinia'
 import { getPosition, getPositionSummary, listPositions, recalculatePosition } from '@/api/index'
 import type { Position, PositionDetail, PositionListFilter, PositionSummary } from '@/types/position'
 import type { TradeRecord } from '@/types/trade'
-
-function getErrorMessage(error: unknown, fallback: string): string {
-  return error instanceof Error ? error.message : fallback
-}
+import { getErrorMessage } from '@/utils/error'
 
 export const usePositionStore = defineStore('position', () => {
   const positions = ref<Position[]>([])

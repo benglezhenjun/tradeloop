@@ -3,10 +3,7 @@ import { ref } from 'vue'
 
 import { createTrade, deleteTrade, getTrade, listTrades } from '@/api/index'
 import type { TradeCreateData, TradeListFilter, TradeRecord } from '@/types/trade'
-
-function getErrorMessage(error: unknown, fallback: string): string {
-  return error instanceof Error ? error.message : fallback
-}
+import { getErrorMessage } from '@/utils/error'
 
 export const useTradeStore = defineStore('trade', () => {
   const trades = ref<TradeRecord[]>([])

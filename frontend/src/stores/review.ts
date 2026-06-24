@@ -13,10 +13,7 @@ import {
   updateReviewNotes as updateReviewNotesApi,
 } from '@/api/index'
 import type { BehaviorPattern, PatternStatus, ReviewStats, TradeReview } from '@/types/review'
-
-function getErrorMessage(error: unknown, fallback: string): string {
-  return error instanceof Error ? error.message : fallback
-}
+import { getErrorMessage } from '@/utils/error'
 
 export const useReviewStore = defineStore('review', () => {
   const reviews = ref<TradeReview[]>([])
