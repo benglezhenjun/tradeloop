@@ -2,19 +2,34 @@
 
 本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/) 风格。
 
-## [Unreleased] — 开源精品化
-### 变更
-- 移除 MVP 时期遗留死代码（`models.py` / `data_sync.py` / `screening.py`）。
-- 重命名易混淆模块：`indicators.py` → `price_stats.py`，`indicator_calc.py` → `technical_indicators.py`。
-- 调度器与事件改用 logging；删除未使用的事件总线占位。
-### 修复
-- 选股「均线多头排列」宽松模式不再被强制要求 240 个交易日。
-- `ma_proximity` / `ma_slope` 改按交易日取窗口，长期停牌/长假个股不再被误删。
-- AI 返回的截断 JSON 数组不再被静默当作单个对象。
-- 持仓部分卖出改用精确比例摊销成本，消除累计舍入漂移。
+## [v1.0.0] — 首个公开发布 · 2026-06-24
+
+> TradeLoop · 知行盘的首个开源版本。基于内部迭代至 V8 的成熟功能（见下方「前身」），
+> 经一轮系统化的开源精品化后定稿。内部应用版本号仍为 `8.0.0`。
+
+### 安全与合规
+- 全新干净 Git 起步；密钥不入库（gitleaks 门禁）；新增 SECURITY、数据使用说明、风险免责、隐私（LLM 数据流）说明。
+- API 密钥可在设置页填写/联网校验，存本地库并打码展示；禁止经通用配置接口读取明文。
+- LLM/Markdown 渲染经 DOMPurify 净化防 XSS。
+
+### 金融正确性
+- 修复持仓部分卖出按精确比例摊销成本（消除舍入漂移）、A 股费用规则（佣金/印花税/过户费）、选股条件单位与边界等真实 bug，并配红绿测试。
+- 新增中英双语 domain 设计文档：交易闭环·费用·持仓、插件式选股引擎（含算例与数据流图）。
+
+### 前端
+- 全面升级为暗色玻璃拟态 + 极光视觉；ErrorBoundary 防白屏、ECharts 生命周期统一、窄屏响应式、图表可访问性。
+- 引入 vitest 单测 + Playwright E2E 烟测。
+
 ### 工程
-- 引入 ruff lint 门禁；新增 GitHub Actions CI（pytest / type-check / build / gitleaks）、Dependabot。
-- 新增 LICENSE、数据使用说明、风险免责、隐私说明、贡献指南。
+- 核心模型迁移 SQLAlchemy 2.0 `Mapped[]`；列表端点统一 `{items,total}` 信封。
+- pytest-cov 覆盖率门槛；OpenAPI 契约导出 + 漂移守卫；轻量可观测（请求 ID/耗时、readiness 探针）。
+- Docker 一键（可配镜像源 + 数据卷持久化）、一键 demo 脚本；CI 覆盖 pytest/ruff/前端 type-check·build·test/E2E/gitleaks。
+
+---
+
+## 前身：内部迭代史（stock-assistant V1–V8）
+
+> 以下为公开发布前、本项目作为个人自用工具的内部版本演进，保留以体现成熟度。
 
 ## [8.0.0] — 数据层大升级
 - 新增预计算技术指标（MA/MACD/KDJ/RSI/BOLL/ATR/OBV 等，22 项）、个股资金流向、龙虎榜（汇总+明细）。
