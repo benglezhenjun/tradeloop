@@ -20,7 +20,8 @@ jobs:
       - run: uv sync --group dev
       - run: uv run ruff check .
       # 注意：CI 不提供 config/local.toml，保持无密钥环境，持续拦截依赖真实 token 的测试
-      - run: uv run python -m pytest tests/ -q
+      # --cov=app 触发覆盖率统计；门槛 fail_under=75 见 pyproject.toml [tool.coverage.report]
+      - run: uv run python -m pytest tests/ -q --cov=app
 
   frontend:
     runs-on: ubuntu-latest
