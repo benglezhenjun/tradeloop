@@ -6,6 +6,7 @@ It never calls Tushare or any other market data provider.
 
 from __future__ import annotations
 
+import json
 import random
 import sys
 from datetime import date, datetime, timedelta
@@ -325,10 +326,10 @@ def generate_moneyflow_rows(quote_rows: list[dict[str, Any]]) -> list[dict[str, 
 
 
 def insert_static_demo_data(db: Session, trade_dates: list[str], quote_rows: list[dict[str, Any]]) -> None:
-    from app.models import TradeRecord, WatchlistGroup, WatchlistStock
+    from app.models import Strategy, StrategyCondition, TradeRecord, WatchlistGroup, WatchlistStock
     from app.services.position import recalculate_position
     from app.services.strategy import init_builtin_strategies
-    from app.services.user_config import ensure_default_configs
+    from app.services.user_config import ensure_default_configs, set_config
 
     group = WatchlistGroup(name="演示分组", description="合成样例库自选股", sort_order=1)
     db.add(group)
@@ -338,37 +339,61 @@ def insert_static_demo_data(db: Session, trade_dates: list[str], quote_rows: lis
 
     init_builtin_strategies(db)
     ensure_default_configs(db)
+    set_config(db, "total_capital", "1000000")  # 演示总资金，让 AI 交易计划开箱可用（需用户自配 LLM key）
+
+    # 额外加一个宽松的演示策略，确保筛选页有结果可展示（基于合成数据，不影响两个内置策略）
+    demo_strategy = Strategy(
+        name="演示策略：量价活跃",
+        description="成交额排名靠前的活跃标的（合成演示数据，用于展示选股引擎）。",
+    )
+    db.add(demo_strategy)
+    db.flush()
+    db.add(
+        StrategyCondition(
+            strategy_id=demo_strategy.id,
+            condition_code="amount_rank",
+            params=json.dumps({"top_n": 8}, ensure_ascii=False),
+            sort_order=1,
+        )
+    )
 
     quote_by_key = {(row["ts_code"], row["trade_date"]): row for row in quote_rows}
-    trade_stock = STOCKS[0]
-    trade_dates_for_position = [trade_dates[80], trade_dates[120], trade_dates[170]]
-    trade_specs = [
-        ("buy", 1000, trade_dates_for_position[0], "首次演示买入"),
-        ("buy", 500, trade_dates_for_position[1], "回踩加仓"),
-        ("sell", 600, trade_dates_for_position[2], "部分止盈"),
+
+    # 一只持仓中的股票（部分卖出）+ 一只已清仓的股票（全部卖出，供交易复盘演示）
+    trade_plan = [
+        (STOCKS[0], [
+            ("buy", 1000, trade_dates[80], "首次演示买入"),
+            ("buy", 500, trade_dates[120], "回踩加仓"),
+            ("sell", 600, trade_dates[170], "部分止盈"),
+        ]),
+        (STOCKS[1], [
+            ("buy", 1000, trade_dates[100], "演示建仓"),
+            ("sell", 1000, trade_dates[160], "目标位清仓"),
+        ]),
     ]
-    for direction, quantity, trade_date, note in trade_specs:
-        quote = quote_by_key[(trade_stock["ts_code"], trade_date)]
-        price = float(quote["close"])
-        amount = rounded(price * quantity, 2)
-        fee = rounded(amount * (0.00125 if direction == "sell" else 0.00025), 2)
-        db.add(
-            TradeRecord(
-                ts_code=trade_stock["ts_code"],
-                stock_name=trade_stock["name"],
-                direction=direction,
-                price=price,
-                quantity=quantity,
-                amount=amount,
-                fee=fee,
-                trade_date=datetime.strptime(trade_date, "%Y%m%d").strftime("%Y-%m-%d"),
-                trade_time="10:15:00",
-                note=note,
-                created_at=FIXED_ISO_DATETIME,
+    for trade_stock, specs in trade_plan:
+        for direction, quantity, trade_date, note in specs:
+            quote = quote_by_key[(trade_stock["ts_code"], trade_date)]
+            price = float(quote["close"])
+            amount = rounded(price * quantity, 2)
+            fee = rounded(amount * (0.00125 if direction == "sell" else 0.00025), 2)
+            db.add(
+                TradeRecord(
+                    ts_code=trade_stock["ts_code"],
+                    stock_name=trade_stock["name"],
+                    direction=direction,
+                    price=price,
+                    quantity=quantity,
+                    amount=amount,
+                    fee=fee,
+                    trade_date=datetime.strptime(trade_date, "%Y%m%d").strftime("%Y-%m-%d"),
+                    trade_time="10:15:00",
+                    note=note,
+                    created_at=FIXED_ISO_DATETIME,
+                )
             )
-        )
-    db.commit()
-    recalculate_position(db, trade_stock["ts_code"])
+        db.commit()
+        recalculate_position(db, trade_stock["ts_code"])
 
 
 def normalize_demo_timestamps(db: Session) -> None:
@@ -445,7 +470,7 @@ def assert_acceptance(db_path: Path, counts: dict[str, int]) -> None:
         "market_sentiment_daily": 1,
         "watchlist_group": 1,
         "watchlist_stock": 5,
-        "strategy": 2,
+        "strategy": 3,
     }
     failed = [
         f"{table}={counts.get(table, 0)} < {minimum}"

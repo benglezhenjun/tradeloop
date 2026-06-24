@@ -1,8 +1,8 @@
 <template>
   <el-aside class="sidebar" width="200px">
     <div class="sidebar-logo">
-      <span class="logo-text">A股工作台</span>
-      <el-tag size="small" type="warning">V7</el-tag>
+      <span class="logo-text">TradeLoop · 知行盘</span>
+      <el-tag size="small" type="success">V8</el-tag>
     </div>
 
     <el-menu
@@ -125,8 +125,9 @@ const currentPath = computed(() => route.path)
 
 .logo-text {
   color: #fff;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .sidebar-menu {
