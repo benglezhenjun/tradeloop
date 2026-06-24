@@ -1,0 +1,15 @@
+# Normalize text files to LF in the repository to avoid noisy CRLF diffs.
+* text=auto eol=lf
+
+# Binary assets — never line-ending normalize (would corrupt them).
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.db binary
+*.sqlite binary
+*.xlsx binary
