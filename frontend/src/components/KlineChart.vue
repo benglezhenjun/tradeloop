@@ -16,6 +16,7 @@ import {
   DataZoomComponent,
   LegendComponent,
 } from 'echarts/components'
+import { TL_DARK_THEME } from '@/lib/echarts'
 import type { KlineItem } from '@/types/watchlist'
 
 // 按需注册 ECharts 组件（减小打包体积）
@@ -123,7 +124,7 @@ const chartOption = computed(() => {
       {
         type: 'value',
         gridIndex: 0,
-        splitArea: { show: true, areaStyle: { color: ['#fff', '#fafafa'] } },
+        splitArea: { show: true, areaStyle: { color: ['transparent', 'rgba(255,255,255,0.02)'] } },
         axisLabel: { fontSize: 10 },
         scale: true,
       },
@@ -222,6 +223,7 @@ const chartOption = computed(() => {
     <VChart
       v-if="klines.length > 0"
       :option="chartOption"
+      :theme="TL_DARK_THEME"
       autoresize
       style="width: 100%; height: 100%"
     />

@@ -321,13 +321,13 @@ onMounted(async () => {
   margin: 0 0 4px;
   font-size: 20px;
   font-weight: 600;
-  color: #303133;
+  color: var(--tl-text);
 }
 
 .page-desc {
   margin: 0;
   font-size: 13px;
-  color: #909399;
+  color: var(--tl-text-tertiary);
 }
 
 .page-alert,
@@ -344,14 +344,14 @@ onMounted(async () => {
 
 .summary-label {
   font-size: 12px;
-  color: #909399;
+  color: var(--tl-text-tertiary);
 }
 
 .summary-value {
   margin-top: 8px;
   font-size: 24px;
   font-weight: 600;
-  color: #303133;
+  color: var(--tl-text);
 }
 
 .position-grid {
@@ -374,13 +374,13 @@ onMounted(async () => {
 .card-title {
   font-size: 16px;
   font-weight: 600;
-  color: #303133;
+  color: var(--tl-text);
 }
 
 .card-subtitle {
   margin-top: 4px;
   font-size: 12px;
-  color: #909399;
+  color: var(--tl-text-tertiary);
   font-family: monospace;
 }
 
@@ -389,8 +389,8 @@ onMounted(async () => {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px 16px;
   padding: 12px 0;
-  border-top: 1px solid #ebeef5;
-  border-bottom: 1px solid #ebeef5;
+  border-top: 1px solid var(--tl-border);
+  border-bottom: 1px solid var(--tl-border);
 }
 
 .metric-item {
@@ -401,13 +401,13 @@ onMounted(async () => {
 
 .metric-label {
   font-size: 12px;
-  color: #909399;
+  color: var(--tl-text-tertiary);
 }
 
 .metric-value {
   font-size: 16px;
   font-weight: 600;
-  color: #303133;
+  color: var(--tl-text);
 }
 
 .card-footer {
@@ -419,7 +419,7 @@ onMounted(async () => {
 
 .card-date {
   font-size: 12px;
-  color: #909399;
+  color: var(--tl-text-tertiary);
 }
 
 .card-actions {
@@ -428,21 +428,21 @@ onMounted(async () => {
 }
 
 .profit {
-  color: #f56c6c;
+  color: var(--up-color);
 }
 
 .loss {
-  color: #67c23a;
+  color: var(--down-color);
 }
 
 .neutral {
-  color: #303133;
+  color: var(--tl-text);
 }
 
 .section-title {
   margin: 18px 0 10px;
   font-size: 14px;
   font-weight: 600;
-  color: #303133;
+  color: var(--tl-text);
 }
 </style>

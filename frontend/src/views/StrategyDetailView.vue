@@ -243,39 +243,39 @@ function formatParamValue(key: string, val: number | string | boolean, cond: Str
 <style scoped>
 .strategy-detail-view { max-width: 800px; }
 .page-header { margin-bottom: 20px; }
-.page-title { font-size: 20px; font-weight: 600; margin: 8px 0 4px; color: #303133; }
-.page-desc { color: #909399; margin: 0; font-size: 13px; }
+.page-title { font-size: 20px; font-weight: 600; margin: 8px 0 4px; color: var(--tl-text); }
+.page-desc { color: var(--tl-text-tertiary); margin: 0; font-size: 13px; }
 
 .conditions-header { display: flex; align-items: center; justify-content: space-between; }
-.empty-conditions { text-align: center; padding: 30px; color: #c0c4cc; font-size: 14px; }
+.empty-conditions { text-align: center; padding: 30px; color: var(--tl-text-tertiary); font-size: 14px; }
 
 .condition-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 12px 0;
-  border-bottom: 1px solid #f2f2f2;
+  border-bottom: 1px solid var(--tl-border);
 }
 .condition-row:last-of-type { border-bottom: none; }
 .condition-name { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; margin-bottom: 4px; }
 .condition-params { display: flex; flex-wrap: wrap; gap: 12px; }
-.param-item { font-size: 12px; color: #909399; }
+.param-item { font-size: 12px; color: var(--tl-text-tertiary); }
 .condition-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 
 /* 条件选择器 */
 .condition-picker { max-height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
 .condition-option {
   padding: 10px 12px;
-  border: 1px solid #e4e7ed;
+  border: 1px solid var(--tl-border);
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.15s;
 }
-.condition-option:hover { border-color: #409eff; background: #ecf5ff; }
-.condition-option.selected { border-color: #409eff; background: #ecf5ff; }
+.condition-option:hover { border-color: var(--tl-brand); background: rgba(99,102,241,0.14); }
+.condition-option.selected { border-color: var(--tl-brand); background: rgba(99,102,241,0.14); }
 .option-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
 .option-name { font-weight: 500; font-size: 13px; }
-.option-desc { font-size: 12px; color: #909399; }
-.param-hint { font-size: 11px; color: #c0c4cc; margin-top: 2px; }
-.editing-label { padding: 10px 12px; background: #f5f7fa; border-radius: 6px; display: flex; align-items: center; }
+.option-desc { font-size: 12px; color: var(--tl-text-tertiary); }
+.param-hint { font-size: 11px; color: var(--tl-text-tertiary); margin-top: 2px; }
+.editing-label { padding: 10px 12px; background: rgba(255,255,255,0.04); border-radius: 6px; display: flex; align-items: center; }
 </style>

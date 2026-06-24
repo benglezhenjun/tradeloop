@@ -83,13 +83,13 @@ function formatDate(d: string) {
 <style scoped>
 .home-view { max-width: 960px; }
 .welcome-section { margin-bottom: 24px; }
-.welcome-title { font-size: 22px; font-weight: 600; margin: 0 0 8px; color: #303133; }
-.welcome-desc { color: #909399; margin: 0; font-size: 14px; }
+.welcome-title { font-size: 22px; font-weight: 600; margin: 0 0 8px; color: var(--tl-text); }
+.welcome-desc { color: var(--tl-text-tertiary); margin: 0; font-size: 14px; }
 
 .stats-row, .nav-row { margin-bottom: 20px; }
 .stat-card { text-align: center; }
-.stat-value { font-size: 26px; font-weight: 700; color: #303133; }
-.stat-label { font-size: 13px; color: #909399; margin-top: 4px; }
+.stat-value { font-size: 26px; font-weight: 700; color: var(--tl-text); }
+.stat-label { font-size: 13px; color: var(--tl-text-tertiary); margin-top: 4px; }
 
 .nav-card {
   cursor: pointer;
@@ -98,6 +98,6 @@ function formatDate(d: string) {
   transition: transform 0.15s;
 }
 .nav-card:hover { transform: translateY(-2px); }
-.nav-card-title { font-size: 15px; font-weight: 600; margin: 10px 0 6px; color: #303133; }
-.nav-card-desc { font-size: 13px; color: #909399; line-height: 1.5; }
+.nav-card-title { font-size: 15px; font-weight: 600; margin: 10px 0 6px; color: var(--tl-text); }
+.nav-card-desc { font-size: 13px; color: var(--tl-text-tertiary); line-height: 1.5; }
 </style>

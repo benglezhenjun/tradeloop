@@ -204,7 +204,7 @@ onMounted(async () => {
 
 .status-model {
   font-size: 12px;
-  color: #909399;
+  color: var(--tl-text-tertiary);
 }
 
 .generate-btn {
@@ -222,23 +222,23 @@ onMounted(async () => {
 }
 
 .history-item:hover {
-  background: #f5f7fa;
+  background: rgba(255,255,255,0.04);
 }
 
 .history-item.active {
-  background: #ecf5ff;
-  border-left-color: #409eff;
+  background: rgba(99,102,241,0.14);
+  border-left-color: var(--tl-brand);
 }
 
 .history-date {
   font-size: 13px;
   font-weight: 500;
-  color: #303133;
+  color: var(--tl-text);
 }
 
 .history-type {
   font-size: 12px;
-  color: #909399;
+  color: var(--tl-text-tertiary);
   margin-top: 2px;
 }
 
@@ -250,7 +250,7 @@ onMounted(async () => {
 .md-content {
   line-height: 1.8;
   font-size: 14px;
-  color: #303133;
+  color: var(--tl-text);
 }
 
 .md-content :deep(h1),
@@ -271,21 +271,21 @@ onMounted(async () => {
 }
 
 .md-content :deep(blockquote) {
-  border-left: 4px solid #dcdfe6;
+  border-left: 4px solid var(--tl-border);
   padding: 4px 12px;
-  color: #909399;
+  color: var(--tl-text-tertiary);
   margin: 8px 0;
-  background: #f5f7fa;
+  background: rgba(255,255,255,0.04);
 }
 
 .md-content :deep(strong) {
-  color: #303133;
+  color: var(--tl-text);
 }
 
 .generating-placeholder {
   text-align: center;
   padding: 60px 0;
-  color: #909399;
+  color: var(--tl-text-tertiary);
 }
 
 .generating-placeholder p {

@@ -346,14 +346,14 @@ onMounted(async () => {
   margin: 0 0 6px;
   font-size: 22px;
   font-weight: 700;
-  color: #303133;
+  color: var(--tl-text);
 }
 
 .page-desc {
   margin: 0;
   max-width: 760px;
   line-height: 1.7;
-  color: #606266;
+  color: var(--tl-text-secondary);
 }
 
 .page-alert {
@@ -387,25 +387,25 @@ onMounted(async () => {
 .card-title {
   font-size: 18px;
   font-weight: 700;
-  color: #303133;
+  color: var(--tl-text);
 }
 
 .card-code {
   margin-top: 4px;
   font-family: monospace;
-  color: #909399;
+  color: var(--tl-text-tertiary);
 }
 
 .score-pill {
   min-width: 88px;
   height: 34px;
   border-radius: 999px;
-  background: linear-gradient(135deg, #ecf5ff, #f0f9eb);
+  background: linear-gradient(135deg, rgba(99,102,241,0.14), rgba(37,208,160,0.12));
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  color: #409eff;
+  color: var(--tl-brand);
 }
 
 .card-meta {
@@ -414,7 +414,7 @@ onMounted(async () => {
   flex-wrap: wrap;
   margin-top: 12px;
   font-size: 12px;
-  color: #909399;
+  color: var(--tl-text-tertiary);
 }
 
 .card-body {
@@ -430,7 +430,7 @@ onMounted(async () => {
 
 .metric-label {
   font-size: 12px;
-  color: #909399;
+  color: var(--tl-text-tertiary);
 }
 
 .metric-value {
@@ -441,7 +441,7 @@ onMounted(async () => {
 
 .metric-sub {
   line-height: 1.7;
-  color: #606266;
+  color: var(--tl-text-secondary);
 }
 
 .card-actions {
@@ -461,7 +461,7 @@ onMounted(async () => {
 .toolbar-copy {
   max-width: 720px;
   line-height: 1.7;
-  color: #606266;
+  color: var(--tl-text-secondary);
 }
 
 .detail-layout {
@@ -481,17 +481,17 @@ onMounted(async () => {
 .summary-badge {
   font-size: 15px;
   font-weight: 600;
-  color: #606266;
+  color: var(--tl-text-secondary);
 }
 
 .summary-score {
   font-size: 42px;
   font-weight: 800;
-  color: #303133;
+  color: var(--tl-text);
 }
 
 .summary-range {
-  color: #909399;
+  color: var(--tl-text-tertiary);
 }
 
 .summary-pnl {
@@ -519,12 +519,12 @@ onMounted(async () => {
   margin: 0 0 10px;
   font-size: 15px;
   font-weight: 700;
-  color: #303133;
+  color: var(--tl-text);
 }
 
 .markdown-body {
   line-height: 1.8;
-  color: #303133;
+  color: var(--tl-text);
 }
 
 .markdown-body :deep(p) {
@@ -543,15 +543,15 @@ onMounted(async () => {
 }
 
 .profit {
-  color: #f56c6c;
+  color: var(--up-color);
 }
 
 .loss {
-  color: #67c23a;
+  color: var(--down-color);
 }
 
 .neutral {
-  color: #303133;
+  color: var(--tl-text);
 }
 
 @media (max-width: 960px) {

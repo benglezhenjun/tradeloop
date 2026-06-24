@@ -343,7 +343,7 @@ function handleSubmit() {
 
 .slider-value {
   width: 48px;
-  color: #606266;
+  color: var(--tl-text-secondary);
   font-size: 13px;
   text-align: right;
 }

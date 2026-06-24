@@ -410,11 +410,11 @@ onMounted(async () => {
   font-size: 20px;
   font-weight: 600;
   margin: 0 0 4px;
-  color: #303133;
+  color: var(--tl-text);
 }
 
 .page-desc {
-  color: #909399;
+  color: var(--tl-text-tertiary);
   margin: 0;
   font-size: 13px;
 }
@@ -458,12 +458,12 @@ onMounted(async () => {
 .stock-name {
   font-size: 16px;
   font-weight: 600;
-  color: #303133;
+  color: var(--tl-text);
 }
 
 .stock-code {
   font-size: 12px;
-  color: #909399;
+  color: var(--tl-text-tertiary);
   font-family: monospace;
 }
 
@@ -477,8 +477,8 @@ onMounted(async () => {
   display: flex;
   gap: 16px;
   padding: 10px 0;
-  border-top: 1px solid #ebeef5;
-  border-bottom: 1px solid #ebeef5;
+  border-top: 1px solid var(--tl-border);
+  border-bottom: 1px solid var(--tl-border);
 }
 
 .price-item {
@@ -489,18 +489,18 @@ onMounted(async () => {
 
 .price-label {
   font-size: 11px;
-  color: #909399;
+  color: var(--tl-text-tertiary);
 }
 
 .price-value {
   font-size: 15px;
   font-weight: 600;
-  color: #303133;
+  color: var(--tl-text);
   font-family: monospace;
 }
 
 .price-value.danger {
-  color: #f56c6c;
+  color: var(--up-color);
 }
 
 .card-footer {
@@ -512,7 +512,7 @@ onMounted(async () => {
 
 .card-date {
   font-size: 11px;
-  color: #c0c4cc;
+  color: var(--tl-text-tertiary);
 }
 
 .card-actions {
@@ -531,12 +531,12 @@ onMounted(async () => {
   margin: 16px 0 8px;
   font-size: 14px;
   font-weight: 600;
-  color: #303133;
+  color: var(--tl-text);
 }
 
 .section-text {
   font-size: 13px;
-  color: #606266;
+  color: var(--tl-text-secondary);
   white-space: pre-wrap;
   line-height: 1.6;
 }

@@ -266,13 +266,13 @@ onMounted(async () => {
   margin: 0 0 6px;
   font-size: 20px;
   font-weight: 600;
-  color: #303133;
+  color: var(--tl-text);
 }
 
 .page-desc {
   margin: 0;
   font-size: 13px;
-  color: #909399;
+  color: var(--tl-text-tertiary);
 }
 
 .section-card {
@@ -294,7 +294,7 @@ onMounted(async () => {
 .field-note {
   margin-left: 12px;
   font-size: 12px;
-  color: #909399;
+  color: var(--tl-text-tertiary);
 }
 
 .hint-alert {
@@ -304,7 +304,7 @@ onMounted(async () => {
 .command-label {
   margin: 0 0 8px;
   font-size: 13px;
-  color: #606266;
+  color: var(--tl-text-secondary);
 }
 
 .command-input {
@@ -312,7 +312,7 @@ onMounted(async () => {
 }
 
 code {
-  background: #f5f5f5;
+  background: rgba(255,255,255,0.04);
   padding: 2px 6px;
   border-radius: 3px;
   font-size: 12px;

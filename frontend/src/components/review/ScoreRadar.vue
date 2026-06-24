@@ -6,6 +6,7 @@ import { CanvasRenderer } from 'echarts/renderers'
 import { RadarChart } from 'echarts/charts'
 import { LegendComponent, RadarComponent, TooltipComponent } from 'echarts/components'
 
+import { TL_DARK_THEME } from '@/lib/echarts'
 import type { ReviewScores } from '@/types/review'
 
 use([CanvasRenderer, RadarChart, RadarComponent, TooltipComponent, LegendComponent])
@@ -71,17 +72,17 @@ const chartOption = computed(() => ({
       max: 10,
     })),
     axisName: {
-      color: '#606266',
+      color: 'rgba(255,255,255,0.7)',
       fontSize: 12,
     },
     splitLine: {
       lineStyle: {
-        color: '#e4e7ed',
+        color: 'rgba(255,255,255,0.12)',
       },
     },
     splitArea: {
       areaStyle: {
-        color: ['rgba(255,255,255,0.8)', 'rgba(250,250,250,0.9)'],
+        color: ['rgba(255,255,255,0.03)', 'rgba(255,255,255,0.05)'],
       },
     },
   },
@@ -109,5 +110,5 @@ const chartOption = computed(() => ({
 </script>
 
 <template>
-  <VChart :option="chartOption" :style="chartStyle" autoresize />
+  <VChart :option="chartOption" :theme="TL_DARK_THEME" :style="chartStyle" autoresize />
 </template>

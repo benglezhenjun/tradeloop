@@ -388,11 +388,11 @@ function pctChgColor(val: number | null): string {
   font-size: 20px;
   font-weight: 600;
   margin: 0 0 6px;
-  color: #303133;
+  color: var(--tl-text);
 }
 
 .page-desc {
-  color: #909399;
+  color: var(--tl-text-tertiary);
   margin: 0;
   font-size: 13px;
 }
@@ -414,18 +414,18 @@ function pctChgColor(val: number | null): string {
 
 .tab-more {
   cursor: pointer;
-  color: #909399;
+  color: var(--tl-text-tertiary);
   font-size: 14px;
   padding: 0 4px;
   line-height: 1;
 }
 
 .tab-more:hover {
-  color: #409eff;
+  color: var(--tl-brand);
 }
 
 .stock-link {
-  color: #409eff;
+  color: var(--tl-brand);
   cursor: pointer;
   font-family: monospace;
 }
@@ -442,7 +442,7 @@ function pctChgColor(val: number | null): string {
 .search-results {
   max-height: 200px;
   overflow-y: auto;
-  border: 1px solid #ebeef5;
+  border: 1px solid var(--tl-border);
   border-radius: 4px;
   margin-top: 8px;
 }
@@ -457,32 +457,32 @@ function pctChgColor(val: number | null): string {
 }
 
 .search-item:hover {
-  background: #f5f7fa;
+  background: rgba(255,255,255,0.04);
 }
 
 .search-item.selected {
-  background: #ecf5ff;
-  border-left: 3px solid #409eff;
+  background: rgba(99,102,241,0.14);
+  border-left: 3px solid var(--tl-brand);
 }
 
 .search-code {
   font-family: monospace;
-  color: #303133;
+  color: var(--tl-text);
   width: 100px;
 }
 
 .search-name {
-  color: #606266;
+  color: var(--tl-text-secondary);
   flex: 1;
 }
 
 .search-industry {
-  color: #909399;
+  color: var(--tl-text-tertiary);
   font-size: 12px;
 }
 
 .search-empty {
-  color: #909399;
+  color: var(--tl-text-tertiary);
   text-align: center;
   padding: 16px 0;
   font-size: 13px;
@@ -491,7 +491,7 @@ function pctChgColor(val: number | null): string {
 .selected-info {
   margin-top: 12px;
   padding: 8px 12px;
-  background: #f0f9eb;
+  background: rgba(37,208,160,0.12);
   border-radius: 4px;
   font-size: 13px;
 }

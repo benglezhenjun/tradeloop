@@ -139,14 +139,14 @@ async function confirmDelete(s: Strategy) {
   justify-content: space-between;
   margin-bottom: 20px;
 }
-.page-title { font-size: 20px; font-weight: 600; margin: 0 0 6px; color: #303133; }
-.page-desc { color: #909399; margin: 0; font-size: 13px; }
+.page-title { font-size: 20px; font-weight: 600; margin: 0 0 6px; color: var(--tl-text); }
+.page-desc { color: var(--tl-text-tertiary); margin: 0; font-size: 13px; }
 
 .strategy-card { margin-bottom: 16px; }
 .card-header { display: flex; align-items: center; justify-content: space-between; }
 .strategy-name { font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px; }
 .card-actions { display: flex; gap: 8px; }
-.strategy-desc { color: #606266; font-size: 13px; margin: 0 0 12px; line-height: 1.5; }
+.strategy-desc { color: var(--tl-text-secondary); font-size: 13px; margin: 0 0 12px; line-height: 1.5; }
 .strategy-meta { display: flex; align-items: center; gap: 12px; }
-.create-time { font-size: 12px; color: #c0c4cc; }
+.create-time { font-size: 12px; color: var(--tl-text-tertiary); }
 </style>

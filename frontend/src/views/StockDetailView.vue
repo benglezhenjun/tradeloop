@@ -327,7 +327,7 @@ onMounted(async () => {
 }
 
 .stock-code {
-  color: #909399;
+  color: var(--tl-text-tertiary);
   font-size: 14px;
   font-family: monospace;
 }
@@ -358,13 +358,13 @@ onMounted(async () => {
 
 .position-label {
   font-size: 12px;
-  color: #909399;
+  color: var(--tl-text-tertiary);
 }
 
 .position-value {
   font-size: 18px;
   font-weight: 600;
-  color: #303133;
+  color: var(--tl-text);
 }
 
 .position-actions {
@@ -384,31 +384,31 @@ onMounted(async () => {
 .analysis-loading {
   padding: 30px;
   text-align: center;
-  color: #909399;
+  color: var(--tl-text-tertiary);
 }
 
 .no-group-tip {
   padding: 20px 0;
   text-align: center;
-  color: #909399;
+  color: var(--tl-text-tertiary);
 }
 
 .profit {
-  color: #f56c6c;
+  color: var(--up-color);
 }
 
 .loss {
-  color: #67c23a;
+  color: var(--down-color);
 }
 
 .neutral {
-  color: #303133;
+  color: var(--tl-text);
 }
 
 .md-content {
   font-size: 14px;
   line-height: 1.8;
-  color: #303133;
+  color: var(--tl-text);
 }
 
 .md-content :deep(h1),
@@ -431,8 +431,8 @@ onMounted(async () => {
 .md-content :deep(blockquote) {
   margin: 6px 0;
   padding: 4px 12px;
-  border-left: 4px solid #dcdfe6;
-  background: #f5f7fa;
-  color: #909399;
+  border-left: 4px solid var(--tl-border);
+  background: rgba(255,255,255,0.04);
+  color: var(--tl-text-tertiary);
 }
 </style>

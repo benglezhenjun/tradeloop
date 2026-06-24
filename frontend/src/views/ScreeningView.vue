@@ -332,11 +332,11 @@ async function handleBatchAddToWatchlist() {
   font-size: 20px;
   font-weight: 600;
   margin: 0 0 6px;
-  color: #303133;
+  color: var(--tl-text);
 }
 
 .page-desc {
-  color: #909399;
+  color: var(--tl-text-tertiary);
   margin: 0;
   font-size: 13px;
 }
@@ -347,7 +347,7 @@ async function handleBatchAddToWatchlist() {
 
 .form-label {
   font-size: 12px;
-  color: #909399;
+  color: var(--tl-text-tertiary);
   margin-bottom: 6px;
 }
 
@@ -366,7 +366,7 @@ async function handleBatchAddToWatchlist() {
 .result-meta {
   display: block;
   font-size: 13px;
-  color: #909399;
+  color: var(--tl-text-tertiary);
   margin-top: 4px;
 }
 
@@ -377,34 +377,34 @@ async function handleBatchAddToWatchlist() {
 }
 
 .up {
-  color: #f56c6c;
+  color: var(--up-color);
 }
 
 .down {
-  color: #67c23a;
+  color: var(--down-color);
 }
 
 .empty-result {
   text-align: center;
   padding: 20px;
-  color: #909399;
+  color: var(--tl-text-tertiary);
   font-size: 13px;
 }
 
 .no-group-tip {
-  color: #909399;
+  color: var(--tl-text-tertiary);
   text-align: center;
   padding: 12px 0;
 }
 
 .batch-tip {
   margin: 0 0 12px;
-  color: #606266;
+  color: var(--tl-text-secondary);
   line-height: 1.6;
 }
 
 .stock-link {
-  color: #409eff;
+  color: var(--tl-brand);
   cursor: pointer;
   font-family: monospace;
 }

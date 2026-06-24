@@ -309,7 +309,7 @@ onMounted(async () => {
 .field-hint {
   margin-top: 6px;
   font-size: 12px;
-  color: #909399;
+  color: var(--tl-text-tertiary);
 }
 
 .fee-box {
@@ -321,7 +321,7 @@ onMounted(async () => {
 
 .fee-note {
   font-size: 12px;
-  color: #909399;
+  color: var(--tl-text-tertiary);
 }
 
 .fee-alert {

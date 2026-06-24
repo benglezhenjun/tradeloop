@@ -182,7 +182,7 @@ onBeforeUnmount(() => {
     />
 
     <div v-if="generateStore.generating || pageState === 'loading'" class="loading-container">
-      <el-icon class="is-loading" :size="40" style="color: #409eff">
+      <el-icon class="is-loading" :size="40" style="color: var(--tl-brand)">
         <Loading />
       </el-icon>
       <p class="loading-text">AI 正在分析，预计 30-90 秒。</p>
@@ -292,11 +292,11 @@ onBeforeUnmount(() => {
   font-size: 20px;
   font-weight: 600;
   margin: 0 0 4px;
-  color: #303133;
+  color: var(--tl-text);
 }
 
 .page-desc {
-  color: #909399;
+  color: var(--tl-text-tertiary);
   margin: 0;
   font-size: 13px;
 }
@@ -311,7 +311,7 @@ onBeforeUnmount(() => {
 }
 
 .loading-text {
-  color: #909399;
+  color: var(--tl-text-tertiary);
   margin-top: 12px;
 }
 
@@ -335,7 +335,7 @@ onBeforeUnmount(() => {
 .proposal-stock {
   font-size: 15px;
   font-weight: 600;
-  color: #303133;
+  color: var(--tl-text);
 }
 
 .proposal-info {
@@ -346,24 +346,24 @@ onBeforeUnmount(() => {
   font-size: 13px;
   font-weight: 600;
   margin: 12px 0 6px;
-  color: #606266;
+  color: var(--tl-text-secondary);
 }
 
 .tp-item {
   font-size: 13px;
-  color: #303133;
+  color: var(--tl-text);
   margin-bottom: 4px;
 }
 
 .tp-note {
-  color: #909399;
+  color: var(--tl-text-tertiary);
   margin-left: 8px;
   font-size: 12px;
 }
 
 .reasoning-text {
   font-size: 13px;
-  color: #606266;
+  color: var(--tl-text-secondary);
   margin: 0;
   line-height: 1.6;
 }
@@ -371,7 +371,7 @@ onBeforeUnmount(() => {
 .risk-box {
   margin-top: 12px;
   padding: 8px 12px;
-  background: #fdf6ec;
+  background: rgba(245,158,11,0.12);
   border-radius: 4px;
   font-size: 13px;
   color: #e6a23c;
@@ -395,11 +395,11 @@ onBeforeUnmount(() => {
 
 .editor-title {
   font-weight: 600;
-  color: #303133;
+  color: var(--tl-text);
 }
 
 .editor-desc {
-  color: #909399;
+  color: var(--tl-text-tertiary);
   margin: 6px 0 0;
   font-size: 13px;
 }

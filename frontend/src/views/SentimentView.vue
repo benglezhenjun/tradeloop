@@ -195,7 +195,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, reactive, watch, type ComponentPublicInstance } from 'vue'
 
-import { echarts, type ECharts } from '@/lib/echarts'
+import { echarts, type ECharts, TL_DARK_THEME } from '@/lib/echarts'
 import { useSentimentStore } from '@/stores/sentiment'
 import type { MainThemeHistoryPoint, SentimentDetail, SentimentHistoryPoint, SentimentSummary } from '@/types/sentiment'
 
@@ -372,7 +372,7 @@ function renderTrendChart(metric: TrendMetricConfig) {
 
   let chart = trendChartInstances.get(metric.key)
   if (!chart) {
-    chart = echarts.init(el)
+    chart = echarts.init(el, TL_DARK_THEME)
     trendChartInstances.set(metric.key, chart)
   }
 
@@ -399,16 +399,14 @@ function renderTrendChart(metric: TrendMetricConfig) {
       type: 'category',
       data: xLabels,
       boundaryGap: false,
-      axisLine: { lineStyle: { color: '#e5e7eb' } },
-      axisLabel: { color: '#8b919d', fontSize: 11 },
+      axisLabel: { fontSize: 11 },
     },
     yAxis: {
       type: 'value',
       axisLabel: {
-        color: '#8b919d',
         formatter: (value: number) => (isRatioChart ? `${value.toFixed(0)}%` : metric.yAxisFormatter(value)),
       },
-      splitLine: { lineStyle: { color: '#eef1f5', type: 'dashed' } },
+      splitLine: { lineStyle: { type: 'dashed' } },
     },
     series: [
       {
@@ -483,9 +481,9 @@ onBeforeUnmount(() => {
   overflow: hidden;
   padding: 4px 4px 24px;
   background:
-    radial-gradient(circle at top right, rgba(217, 70, 239, 0.08), transparent 26%),
-    radial-gradient(circle at left center, rgba(37, 99, 235, 0.08), transparent 22%),
-    linear-gradient(180deg, #f7f9fc 0%, #f3f5fa 100%);
+    radial-gradient(circle at top right, rgba(217, 70, 239, 0.1), transparent 26%),
+    radial-gradient(circle at left center, rgba(37, 99, 235, 0.1), transparent 22%),
+    transparent;
 }
 
 .sentiment-view::before,
@@ -537,7 +535,7 @@ onBeforeUnmount(() => {
 }
 
 .eyebrow {
-  color: #0f766e;
+  color: #2dd4bf;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   font-size: 12px;
@@ -548,12 +546,12 @@ onBeforeUnmount(() => {
   margin: 6px 0 8px;
   font-size: 32px;
   line-height: 1.1;
-  color: #0f172a;
+  color: var(--tl-text);
 }
 
 .hero-copy p {
   margin: 0;
-  color: #475569;
+  color: var(--tl-text-secondary);
   font-size: 14px;
 }
 
@@ -569,19 +567,19 @@ onBeforeUnmount(() => {
   padding: 12px 14px;
   border: 1px solid rgba(148, 163, 184, 0.18);
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(10px);
 }
 
 .meta-label {
   display: block;
-  color: #64748b;
+  color: var(--tl-text-secondary);
   font-size: 12px;
   margin-bottom: 4px;
 }
 
 .meta-chip strong {
-  color: #0f172a;
+  color: var(--tl-text);
   font-size: 14px;
 }
 
@@ -590,7 +588,7 @@ onBeforeUnmount(() => {
 }
 
 .window-switch {
-  background: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 999px;
   padding: 2px;
 }
@@ -608,7 +606,7 @@ onBeforeUnmount(() => {
 .theme-shell,
 .detail-shell {
   border: 1px solid rgba(148, 163, 184, 0.18);
-  background: rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.07);
   backdrop-filter: blur(10px);
   box-shadow: 0 12px 30px rgba(15, 23, 42, 0.05);
 }
@@ -623,7 +621,7 @@ onBeforeUnmount(() => {
 }
 
 .summary-label {
-  color: #64748b;
+  color: var(--tl-text-secondary);
   font-size: 12px;
   margin-bottom: 12px;
 }
@@ -631,13 +629,13 @@ onBeforeUnmount(() => {
 .summary-value {
   font-size: 24px;
   font-weight: 800;
-  color: #0f172a;
+  color: var(--tl-text);
   line-height: 1.1;
 }
 
 .summary-note {
   margin-top: 10px;
-  color: #64748b;
+  color: var(--tl-text-secondary);
   font-size: 12px;
 }
 
@@ -662,12 +660,12 @@ onBeforeUnmount(() => {
 .section-head h2 {
   margin: 0;
   font-size: 18px;
-  color: #0f172a;
+  color: var(--tl-text);
 }
 
 .section-head p {
   margin: 6px 0 0;
-  color: #64748b;
+  color: var(--tl-text-secondary);
   font-size: 13px;
 }
 
@@ -675,7 +673,7 @@ onBeforeUnmount(() => {
   padding: 8px 12px;
   border-radius: 999px;
   background: rgba(15, 118, 110, 0.08);
-  color: #0f766e;
+  color: #2dd4bf;
   font-size: 12px;
   font-weight: 700;
 }
@@ -700,18 +698,18 @@ onBeforeUnmount(() => {
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 8px;
-  color: #0f172a;
+  color: var(--tl-text);
 }
 
 .trend-head span {
   font-size: 13px;
-  color: #475569;
+  color: var(--tl-text-secondary);
   font-weight: 600;
 }
 
 .trend-head strong {
   font-size: 15px;
-  color: #0f172a;
+  color: var(--tl-text);
 }
 
 .trend-chart {
@@ -739,18 +737,18 @@ onBeforeUnmount(() => {
 .theme-item {
   padding: 12px 14px;
   border-radius: 16px;
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(248, 250, 252, 0.92));
+  border: 1px solid var(--tl-border);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
 }
 
 .theme-date {
-  color: #64748b;
+  color: var(--tl-text-secondary);
   font-size: 12px;
   margin-bottom: 4px;
 }
 
 .theme-name {
-  color: #0f172a;
+  color: var(--tl-text);
   font-size: 15px;
   font-weight: 700;
 }
@@ -762,7 +760,7 @@ onBeforeUnmount(() => {
   gap: 10px;
   flex-wrap: wrap;
   margin-top: 6px;
-  color: #64748b;
+  color: var(--tl-text-secondary);
   font-size: 12px;
 }
 
@@ -782,7 +780,7 @@ onBeforeUnmount(() => {
 }
 
 .detail-title {
-  color: #0f172a;
+  color: var(--tl-text);
   font-size: 14px;
   font-weight: 700;
   margin-bottom: 10px;
@@ -801,20 +799,20 @@ onBeforeUnmount(() => {
 .theme-leader-list li {
   padding: 10px 12px;
   border-radius: 14px;
-  background: #f8fafc;
-  border: 1px solid rgba(226, 232, 240, 0.8);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--tl-border);
 }
 
 .sample-code {
   display: inline-block;
   margin-right: 8px;
-  color: #0f766e;
+  color: #2dd4bf;
   font-size: 12px;
   font-weight: 700;
 }
 
 .sample-main {
-  color: #0f172a;
+  color: var(--tl-text);
   font-size: 13px;
   font-weight: 600;
 }
@@ -822,13 +820,13 @@ onBeforeUnmount(() => {
 .sample-sub {
   display: block;
   margin-top: 4px;
-  color: #64748b;
+  color: var(--tl-text-secondary);
   font-size: 12px;
 }
 
 .sample-empty,
 .empty-state {
-  color: #94a3b8;
+  color: var(--tl-text-tertiary);
   font-size: 13px;
   text-align: center;
   padding: 24px 0;
@@ -848,7 +846,7 @@ onBeforeUnmount(() => {
 }
 
 .leader-main strong {
-  color: #0f172a;
+  color: var(--tl-text);
 }
 
 .error-alert {

@@ -321,13 +321,13 @@ onMounted(async () => {
   margin: 0 0 4px;
   font-size: 20px;
   font-weight: 600;
-  color: #303133;
+  color: var(--tl-text);
 }
 
 .page-desc {
   margin: 0;
   font-size: 13px;
-  color: #909399;
+  color: var(--tl-text-tertiary);
 }
 
 .page-alert,
@@ -343,7 +343,7 @@ onMounted(async () => {
 
 .stock-code {
   font-size: 12px;
-  color: #909399;
+  color: var(--tl-text-tertiary);
   font-family: monospace;
 }
 </style>

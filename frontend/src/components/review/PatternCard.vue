@@ -84,13 +84,13 @@ const statusLabel = computed(() => {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
-  color: #303133;
+  color: var(--tl-text);
 }
 
 .card-description {
   margin: 12px 0;
   line-height: 1.7;
-  color: #606266;
+  color: var(--tl-text-secondary);
 }
 
 .card-meta {
@@ -98,7 +98,7 @@ const statusLabel = computed(() => {
   gap: 16px;
   flex-wrap: wrap;
   font-size: 12px;
-  color: #909399;
+  color: var(--tl-text-tertiary);
 }
 
 .card-actions {
