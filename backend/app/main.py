@@ -14,6 +14,8 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.constants import APP_VERSION
+from app.observability import request_context_middleware
 from app.api import (
     analysis,
     dashboard,
@@ -26,6 +28,7 @@ from app.api import (
     sentiment,
     stocks,
     strategies,
+    system,
     trade,
     user_config,
     watchlist,
@@ -73,9 +76,12 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="A股交易辅助系统",
     description="个人交易研究工作台",
-    version="8.0.0",
+    version=APP_VERSION,
     lifespan=lifespan,
 )
+
+# 请求 ID + 耗时（轻量可观测性）
+app.middleware("http")(request_context_middleware)
 
 app.add_middleware(
     CORSMiddleware,
@@ -99,12 +105,4 @@ app.include_router(trade.router, prefix="/api")
 app.include_router(position.router, prefix="/api")
 app.include_router(review.router, prefix="/api")
 app.include_router(user_config.router, prefix="/api")
-
-
-@app.get("/api/health")
-def health_check():
-    return {
-        "status": "ok",
-        "version": "8.0.0",
-        "message": "A股交易辅助系统 V8 运行中",
-    }
+app.include_router(system.router)

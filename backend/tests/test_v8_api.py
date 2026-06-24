@@ -13,7 +13,7 @@ def client(db):
     from app.api import data as data_api
     from app.api import kline as kline_api
     from app.database import get_db
-    from app.main import health_check
+    from app.api.system import health_check
 
     app = FastAPI()
     app.include_router(data_api.router)
