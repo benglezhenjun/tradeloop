@@ -6,7 +6,7 @@
 import axios from 'axios'
 
 import type { ReportListItem } from '@/types/analysis'
-import type { ListEnvelope } from '@/types/common'
+import type { CredentialCheck, CredentialStatus, CredentialUpdate, ListEnvelope } from '@/types/common'
 import type { Position, PositionDetail, PositionListFilter, PositionSummary } from '@/types/position'
 import type {
   GeneratePlansResponse,
@@ -147,6 +147,13 @@ export const updatePatternStatus = (id: number, status: string) =>
 export const getConfig = (key: string) => http.get(`/api/config/${key}`)
 export const setConfig = (key: string, value: string) =>
   http.put(`/api/config/${key}`, { value })
+
+// ---- API 密钥（凭证）----
+export const getCredentials = () => http.get<CredentialStatus>('/api/credentials')
+export const updateCredentials = (data: CredentialUpdate) =>
+  http.put<CredentialStatus>('/api/credentials', data)
+export const checkCredentials = () =>
+  http.post<CredentialCheck>('/api/credentials/check', null, { timeout: 30_000 })
 
 // ---- 仪表盘 ----
 export const getMarketOverview = () => http.get('/api/dashboard/overview')

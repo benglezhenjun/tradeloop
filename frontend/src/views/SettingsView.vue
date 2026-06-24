@@ -2,9 +2,18 @@
 import { onMounted, reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 
-import { getConfig, setConfig, triggerSync } from '@/api/index'
+import {
+  checkCredentials,
+  getConfig,
+  getCredentials,
+  setConfig,
+  triggerSync,
+  updateCredentials,
+} from '@/api/index'
+import type { CredentialCheck, CredentialStatus } from '@/types/common'
 import { useAppStore } from '@/stores/app'
 import { usePlanGenerateStore } from '@/stores/planGenerate'
+import { getErrorMessage } from '@/utils/error'
 
 const appStore = useAppStore()
 const planGenerateStore = usePlanGenerateStore()
@@ -17,6 +26,62 @@ const syncing = ref(false)
 const capitalInput = ref(0)
 const savingCapital = ref(false)
 const savingRates = ref(false)
+
+// ---- API 密钥（凭证）----
+const credStatus = ref<CredentialStatus | null>(null)
+const credCheck = ref<CredentialCheck | null>(null)
+const checking = ref(false)
+const savingCreds = ref(false)
+const credForm = reactive({
+  tushare_token: '',
+  llm_api_key: '',
+  llm_base_url: '',
+  llm_model: '',
+})
+
+async function loadCredStatus() {
+  try {
+    credStatus.value = (await getCredentials()).data
+  } catch (e: unknown) {
+    ElMessage.warning(getErrorMessage(e, '读取密钥状态失败'))
+  }
+}
+
+async function runCredCheck() {
+  checking.value = true
+  try {
+    credCheck.value = (await checkCredentials()).data
+  } catch (e: unknown) {
+    ElMessage.warning(getErrorMessage(e, '密钥校验失败'))
+  } finally {
+    checking.value = false
+  }
+}
+
+async function saveCreds() {
+  // 只提交填了的字段，空字段不动后端已存的 key
+  const payload = Object.fromEntries(
+    Object.entries(credForm).filter(([, v]) => v.trim() !== ''),
+  )
+  if (Object.keys(payload).length === 0) {
+    ElMessage.info('没有要保存的改动')
+    return
+  }
+  savingCreds.value = true
+  try {
+    credStatus.value = (await updateCredentials(payload)).data
+    credForm.tushare_token = ''
+    credForm.llm_api_key = ''
+    credForm.llm_base_url = ''
+    credForm.llm_model = ''
+    ElMessage.success('密钥已保存并生效')
+    await runCredCheck()
+  } catch (e: unknown) {
+    ElMessage.error(getErrorMessage(e, '保存密钥失败'))
+  } finally {
+    savingCreds.value = false
+  }
+}
 
 const rateForm = reactive({
   commission_rate: 0.00025,
@@ -101,6 +166,9 @@ async function triggerDailySync() {
 onMounted(async () => {
   await Promise.all([appStore.fetchStats(), planGenerateStore.fetchTotalCapital(), loadTradeRates()])
   capitalInput.value = planGenerateStore.totalCapital
+  // 打开即读状态 + 自动联网校验
+  await loadCredStatus()
+  runCredCheck()
 })
 </script>
 
@@ -143,6 +211,64 @@ onMounted(async () => {
         </el-button>
         <el-text type="warning" size="small">首次使用前，请先完成全量数据导入。</el-text>
       </div>
+    </el-card>
+
+    <el-card shadow="never" class="section-card">
+      <template #header>
+        <div class="cred-header">
+          <span>API 密钥</span>
+          <el-button size="small" :loading="checking" @click="runCredCheck">重新校验</el-button>
+        </div>
+      </template>
+
+      <div class="cred-status">
+        <div class="cred-line">
+          <span class="cred-name">Tushare</span>
+          <el-tag size="small" :type="credStatus?.tushare.configured ? 'success' : 'info'">
+            {{ credStatus?.tushare.configured ? credStatus.tushare.masked : '未配置' }}
+          </el-tag>
+          <el-tag v-if="credCheck" size="small" :type="credCheck.tushare.ok ? 'success' : 'danger'">
+            {{ credCheck.tushare.ok ? '校验通过' : (credCheck.tushare.reason || '校验失败') }}
+          </el-tag>
+        </div>
+        <div class="cred-line">
+          <span class="cred-name">LLM</span>
+          <el-tag size="small" :type="credStatus?.llm.configured ? 'success' : 'info'">
+            {{ credStatus?.llm.configured ? credStatus.llm.masked : '未配置' }}
+          </el-tag>
+          <el-text v-if="credStatus?.llm.configured" size="small" type="info">
+            {{ credStatus.llm.provider }} · {{ credStatus.llm.model }}
+          </el-text>
+          <el-tag v-if="credCheck" size="small" :type="credCheck.llm.ok ? 'success' : 'danger'">
+            {{ credCheck.llm.ok ? '校验通过' : (credCheck.llm.reason || '校验失败') }}
+          </el-tag>
+        </div>
+      </div>
+
+      <el-form label-width="120px" class="cred-form">
+        <el-form-item label="Tushare token">
+          <el-input v-model="credForm.tushare_token" type="password" show-password placeholder="粘贴新 token 以更新（留空不改）" style="max-width: 360px" />
+        </el-form-item>
+        <el-form-item label="LLM api_key">
+          <el-input v-model="credForm.llm_api_key" type="password" show-password placeholder="粘贴新 api_key 以更新（留空不改）" style="max-width: 360px" />
+        </el-form-item>
+        <el-form-item label="LLM base_url">
+          <el-input v-model="credForm.llm_base_url" :placeholder="credStatus?.llm.base_url || 'https://api.deepseek.com'" style="max-width: 360px" />
+        </el-form-item>
+        <el-form-item label="LLM model">
+          <el-input v-model="credForm.llm_model" :placeholder="credStatus?.llm.model || 'deepseek-chat'" style="max-width: 360px" />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" :loading="savingCreds" @click="saveCreds">保存并校验</el-button>
+        </el-form-item>
+      </el-form>
+
+      <el-alert
+        type="info"
+        :closable="false"
+        class="hint-alert"
+        title="密钥只保存在本机数据库（data/stock.db，不入 Git），页面仅显示打码值。保存后立即生效，无需重启。"
+      />
     </el-card>
 
     <el-card shadow="never" class="section-card">
@@ -285,6 +411,36 @@ onMounted(async () => {
   align-items: center;
   margin-top: 16px;
   flex-wrap: wrap;
+}
+
+.cred-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cred-status {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.cred-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cred-name {
+  width: 64px;
+  font-size: 13px;
+  color: var(--tl-text-secondary);
+}
+
+.cred-form {
+  max-width: 560px;
 }
 
 .rate-form {

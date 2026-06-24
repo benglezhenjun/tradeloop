@@ -11,3 +11,23 @@ export interface ListEnvelope<T> {
   items: T[]
   total: number
 }
+
+/** API 密钥（凭证）状态：后端只返回打码值，绝不返回完整 key。 */
+export interface CredentialStatus {
+  tushare: { configured: boolean; masked: string }
+  llm: { configured: boolean; masked: string; provider: string; base_url: string; model: string }
+}
+
+/** 保存凭证：空字段=不改（避免清掉已存 key）。 */
+export interface CredentialUpdate {
+  tushare_token?: string
+  llm_api_key?: string
+  llm_base_url?: string
+  llm_model?: string
+}
+
+/** 联网校验结果。 */
+export interface CredentialCheck {
+  tushare: { ok: boolean; reason?: string }
+  llm: { ok: boolean; reason?: string }
+}
