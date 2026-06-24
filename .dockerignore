@@ -6,7 +6,7 @@
 **/*.pyc
 **/.pytest_cache
 **/*.log
-.codex-tmp
+.*-tmp
 docs
 config/local.toml
 data/*.db

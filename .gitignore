@@ -6,7 +6,6 @@ __pycache__/
 venv/
 .uv/
 .pytest_cache/
-.claude/
 .coverage
 .coverage.*
 coverage.xml
@@ -37,8 +36,9 @@ frontend/test-results/
 frontend/playwright-report/
 frontend/playwright/.cache/
 
-# AI 协作 / 临时
-.codex-tmp/
+# 本地临时 / 草稿
+*.tmp
+.*-tmp/
 
 # 编辑器 / 系统
 .vscode/
