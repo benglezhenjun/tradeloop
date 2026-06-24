@@ -2,7 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { marked } from 'marked'
+import { renderMarkdown as renderSafeMarkdown } from '@/utils/markdown'
 
 import PatternCard from '@/components/review/PatternCard.vue'
 import ScoreRadar from '@/components/review/ScoreRadar.vue'
@@ -69,7 +69,7 @@ function renderMarkdown(text: string | null | undefined) {
   if (!text) {
     return '<p>暂无内容</p>'
   }
-  return marked.parse(text) as string
+  return renderSafeMarkdown(text)
 }
 
 async function loadPage(tsCode?: string) {

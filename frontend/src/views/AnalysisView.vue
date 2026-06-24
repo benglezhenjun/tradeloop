@@ -122,7 +122,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
-import { marked } from 'marked'
+import { renderMarkdown } from '@/utils/markdown'
 import { Loading } from '@element-plus/icons-vue'
 import { useAnalysisStore } from '@/stores/analysis'
 import type { ReportDetail, DailyReportResult } from '@/types/analysis'
@@ -155,7 +155,7 @@ const fullContent = computed<string>(() => {
 })
 
 function renderMd(text: string): string {
-  return marked.parse(text) as string
+  return renderMarkdown(text)
 }
 
 function formatDate(iso: string): string {

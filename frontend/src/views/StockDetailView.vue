@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { marked } from 'marked'
+import { renderMarkdown } from '@/utils/markdown'
 
 import { analyzeStock, getKline, getLlmStatus, getPosition, getStockInfo } from '@/api/index'
 import KlineChart from '@/components/KlineChart.vue'
@@ -58,7 +58,7 @@ function pnlClass(value: number | undefined) {
 }
 
 function renderMd(text: string): string {
-  return marked.parse(text) as string
+  return renderMarkdown(text)
 }
 
 async function loadPositionSummary(tsCode: string) {
