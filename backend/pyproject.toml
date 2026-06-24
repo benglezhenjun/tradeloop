@@ -38,7 +38,8 @@ select = ["E", "F", "W"]
 ignore = ["E501"]   # 行宽不做硬性门禁（SQL / prompt 较长）
 
 # ── 覆盖率 ──
-# 门槛取真实值（~79%）向下取整到 5 的倍数 = 75%，留出迭代余量；
+# 门槛取真实值向下取整到 5 的倍数，留出迭代余量，随测试补强逐步棘轮上调：
+# 补齐 strategies/watchlist/analysis API 层后实测 82.8% → 门槛 80%。
 # 不写进 pytest addopts，避免本地跑单个测试文件时被 fail_under 误伤。
 # CI 与覆盖率统计用：uv run python -m pytest tests/ -q --cov=app
 [tool.coverage.run]
@@ -49,7 +50,7 @@ omit = [
 ]
 
 [tool.coverage.report]
-fail_under = 75
+fail_under = 80
 show_missing = true
 exclude_lines = [
     "pragma: no cover",
