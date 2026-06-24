@@ -159,6 +159,7 @@ cd frontend && pnpm type-check && pnpm build
 ```
 
 ## 文档
+- **Domain 设计文档（图文讲金融逻辑）**：[交易闭环·费用与持仓规则](./docs/domain/trade-loop.md) · [选股引擎](./docs/domain/screening-engine.md) · [全部 ▸](./docs/domain/README.md)
 - [更新日志 CHANGELOG](./CHANGELOG.md) · [贡献指南](./CONTRIBUTING.md)
 - [风险免责](./FINANCIAL_DISCLAIMER.md) · [数据说明](./DATA_LICENSE.md) · [隐私](./PRIVACY.md)
 

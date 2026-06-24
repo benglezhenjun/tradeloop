@@ -86,5 +86,9 @@ cd backend && uv run python -m pytest tests/ -q   # 230 passed
 cd frontend && pnpm type-check && pnpm build
 ```
 
+## Docs
+- **Domain design notes (the financial logic, illustrated)**: [Trade loop · fees & position rules](./docs/domain/trade-loop.en.md) · [Screening engine](./docs/domain/screening-engine.en.md) · [all ▸](./docs/domain/README.md)
+- [CHANGELOG](./CHANGELOG.md) · [Contributing](./CONTRIBUTING.md) · [Disclaimer](./FINANCIAL_DISCLAIMER.md) · [Data notice](./DATA_LICENSE.md) · [Privacy](./PRIVACY.md)
+
 ## License
 Code under [MIT](./LICENSE); data is not covered by MIT (see [data notice](./DATA_LICENSE.md)). Not investment advice — use at your own risk.
