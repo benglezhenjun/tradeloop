@@ -8,7 +8,8 @@ import time
 import tushare as ts
 from sqlalchemy import func
 
-from app.config import BACKFILL_SLEEP, TUSHARE_TOKEN
+from app import credentials
+from app.config import BACKFILL_SLEEP
 from app.models import DailyMoneyflow, DailyQuote
 
 
@@ -16,9 +17,10 @@ logger = logging.getLogger(__name__)
 
 
 def _get_api():
-    if not TUSHARE_TOKEN:
-        raise ValueError("Tushare token 未配置，请先在 config/local.toml 中填写。")
-    return ts.pro_api(TUSHARE_TOKEN)
+    token = credentials.tushare_token()
+    if not token:
+        raise ValueError("Tushare token 未配置，请在设置页填写，或在 config/local.toml 中填写 [tushare] token。")
+    return ts.pro_api(token)
 
 
 def _compute_net_amount(row) -> float:

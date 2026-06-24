@@ -7,8 +7,9 @@ services:
         PIP_INDEX_URL: ${PIP_INDEX_URL:-https://pypi.org/simple}
         UV_INDEX_URL: ${UV_INDEX_URL:-https://pypi.org/simple}
     image: tradeloop-backend
+    # 只绑本机回环：API 无鉴权 + 可管理密钥，不应暴露到局域网
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     environment:
       - TRADELOOP_ENABLE_SCHEDULER=0
     healthcheck:
@@ -25,7 +26,7 @@ services:
         NPM_REGISTRY: ${NPM_REGISTRY:-https://registry.npmjs.org}
     image: tradeloop-frontend
     ports:
-      - "5173:80"
+      - "127.0.0.1:5173:80"
     depends_on:
       backend:
         condition: service_healthy

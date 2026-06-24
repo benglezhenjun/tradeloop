@@ -5,12 +5,16 @@
 - POST /api/credentials/check  — 实时联网校验（Tushare 拉交易日历 / LLM 列模型，均不消耗对话额度）
 """
 
+import logging
+
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from app import credentials
 from app.database import get_db
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/credentials", tags=["凭证"])
 
@@ -46,8 +50,9 @@ def _check_tushare() -> dict:
         # 交易日历是最轻量的接口之一，足以验证 token 是否有效
         pro.trade_cal(exchange="SSE", start_date="20260101", end_date="20260102")
         return {"ok": True}
-    except Exception as exc:  # noqa: BLE001 — 校验需吞掉一切异常并回报原因
-        return {"ok": False, "reason": str(exc)[:160]}
+    except Exception as exc:  # noqa: BLE001 — 校验需吞掉一切异常
+        logger.warning("Tushare 凭证校验失败: %s", exc)  # 完整异常只进后端日志
+        return {"ok": False, "reason": "校验失败：token 可能无效或网络异常"}
 
 
 def _check_llm() -> dict:
@@ -61,7 +66,8 @@ def _check_llm() -> dict:
         client.models.list()
         return {"ok": True}
     except Exception as exc:  # noqa: BLE001
-        return {"ok": False, "reason": str(exc)[:160]}
+        logger.warning("LLM 凭证校验失败: %s", exc)  # 完整异常只进后端日志
+        return {"ok": False, "reason": "校验失败：api_key/base_url 可能无效或网络异常"}
 
 
 @router.post("/check")

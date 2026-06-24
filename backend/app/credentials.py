@@ -20,6 +20,10 @@ _TOML_FALLBACK = {
     "llm_model": lambda: config.LLM_MODEL,
 }
 
+# 凭证键虽与普通配置同存 user_config 表，但**禁止**经通用 /api/config/{key} 读写——
+# 否则会绕过 /api/credentials 的打码，直接读出明文 key。仅允许走专用打码接口。
+RESERVED_KEYS = frozenset(_TOML_FALLBACK)
+
 # 进程内缓存：DB 覆盖值。启动时从 DB 加载，保存时更新——保证不重启即生效。
 _overrides: dict[str, str] = {}
 

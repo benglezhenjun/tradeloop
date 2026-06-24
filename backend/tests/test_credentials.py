@@ -111,3 +111,24 @@ def test_check_endpoint_reports_per_credential(client):
     assert body["tushare"]["ok"] is True
     assert body["llm"]["ok"] is False
     assert body["llm"]["reason"] == "未配置"
+
+
+def test_generic_config_api_cannot_read_or_write_credentials(db):
+    """安全：通用 /api/config/{key} 不得读写凭证键，否则绕过打码读出明文。"""
+    from app.api import user_config as user_config_api
+    from app.database import get_db
+
+    app = FastAPI()
+    app.include_router(user_config_api.router, prefix="/api")
+    app.dependency_overrides[get_db] = lambda: (yield db)
+    c = TestClient(app)
+
+    # 即便 DB 里已存了 token（经凭证层），通用接口也必须拒绝
+    from app import credentials
+
+    credentials.save(db, {"tushare_token": "a11a1234567890f7c2"})
+    assert c.get("/api/config/tushare_token").status_code == 403
+    assert c.get("/api/config/llm_api_key").status_code == 403
+    assert c.put("/api/config/tushare_token", json={"value": "x"}).status_code == 403
+    # 普通配置仍可正常读写
+    assert c.put("/api/config/total_capital", json={"value": "100"}).status_code == 200

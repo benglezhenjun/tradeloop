@@ -159,7 +159,7 @@ class FakeThemeHeatDuplicatePro:
 def test_sync_limit_event_daily_handles_empty_result_and_uses_tushare_token(db):
     from app.services.sync_limit_event import sync_limit_event_daily
 
-    with patch("app.services.sync_limit_event.TUSHARE_TOKEN", "demo-token"), patch(
+    with patch("app.credentials.tushare_token", return_value="demo-token"), patch(
         "app.services.sync_limit_event.ts.pro_api",
         return_value=FakeLimitEventEmptyPro(),
     ) as mock_pro_api, patch("app.services.sync_limit_event.time.sleep", return_value=None):
@@ -190,7 +190,7 @@ def test_sync_limit_event_daily_replaces_existing_trade_date_rows(db):
     )
     db.commit()
 
-    with patch("app.services.sync_limit_event.TUSHARE_TOKEN", "demo-token"), patch(
+    with patch("app.credentials.tushare_token", return_value="demo-token"), patch(
         "app.services.sync_limit_event.ts.pro_api",
         return_value=FakeLimitEventReplacePro(),
     ), patch("app.services.sync_limit_event.time.sleep", return_value=None):
@@ -210,7 +210,7 @@ def test_sync_theme_heat_daily_returns_statistics_and_uses_tushare_token(db):
     from app.models import ThemeHeatDaily
     from app.services.sync_theme_heat import sync_theme_heat_daily
 
-    with patch("app.services.sync_theme_heat.TUSHARE_TOKEN", "demo-token"), patch(
+    with patch("app.credentials.tushare_token", return_value="demo-token"), patch(
         "app.services.sync_theme_heat.ts.pro_api",
         return_value=FakeThemeHeatPro(),
     ) as mock_pro_api, patch("app.services.sync_theme_heat.time.sleep", return_value=None):
@@ -234,7 +234,7 @@ def test_sync_theme_heat_daily_deduplicates_same_theme_by_latest_rank_time(db):
     from app.models import ThemeHeatDaily
     from app.services.sync_theme_heat import sync_theme_heat_daily
 
-    with patch("app.services.sync_theme_heat.TUSHARE_TOKEN", "demo-token"), patch(
+    with patch("app.credentials.tushare_token", return_value="demo-token"), patch(
         "app.services.sync_theme_heat.ts.pro_api",
         return_value=FakeThemeHeatDuplicatePro(),
     ), patch("app.services.sync_theme_heat.time.sleep", return_value=None):
