@@ -23,6 +23,9 @@
 - **改用本地模型**（如 Ollama / LM Studio，OpenAI 兼容）→ 把 `base_url` 指向本地，数据不出本机。
 - 除上述 Tushare 与你指定的 LLM 外，本系统不向任何第三方发送数据。
 
+## 密钥存放
+Tushare token 与 LLM api_key 可在 **设置页填写**，保存在本机数据库 `data/stock.db`（已 gitignore，绝不入库），页面仅显示打码值；也可继续写在 `config/local.toml`。两者皆不随仓库分发，随仓 `data/sample.db` 为合成库、不含任何真实密钥。
+
 ---
 
 # Privacy & Data Flow (English)
