@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
+from app.api.envelope import list_envelope
 from app.database import get_db
 from app.errors import raise_service_error
 from app.services.screening import run_strategy
@@ -44,8 +45,8 @@ def screening_history(strategy_id: int, limit: int = 10, db: Session = Depends(g
         {"sid": strategy_id, "limit": limit},
     ).fetchall()
 
-    return {
-        "history": [
+    return list_envelope(
+        [
             {
                 "run_id": r[0],
                 "strategy_name": r[1],
@@ -56,7 +57,7 @@ def screening_history(strategy_id: int, limit: int = 10, db: Session = Depends(g
             }
             for r in rows
         ]
-    }
+    )
 
 
 @router.get("/result/{run_id}")

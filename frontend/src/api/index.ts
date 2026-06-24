@@ -24,7 +24,7 @@ import type {
   SentimentSummary,
 } from '@/types/sentiment'
 import type { TradeCreateData, TradeDetailResponse, TradeListFilter, TradeRecord } from '@/types/trade'
-import type { Strategy } from '@/types/strategy'
+import type { ScreeningRunHistory, Strategy } from '@/types/strategy'
 import type { StockSearchResult, WatchlistGroup, WatchlistStock } from '@/types/watchlist'
 
 export const http = axios.create({
@@ -69,7 +69,7 @@ export const runScreening = (strategyId: number, tradeDate?: string) =>
     params: tradeDate ? { trade_date: tradeDate } : {},
   })
 export const getScreeningHistory = (strategyId: number) =>
-  http.get(`/api/screening/history/${strategyId}`)
+  http.get<ListEnvelope<ScreeningRunHistory>>(`/api/screening/history/${strategyId}`)
 
 // ---- 个股 ----
 export const getStockInfo = (tsCode: string) => http.get(`/api/stocks/${tsCode}`)

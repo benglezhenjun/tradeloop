@@ -62,3 +62,12 @@ export interface ScreeningResult {
   duration_ms: number
   candidates: ScreeningCandidate[]
 }
+
+export interface ScreeningRunHistory {
+  run_id: number
+  strategy_name: string
+  trade_date: string
+  run_at: string
+  result_count: number
+  duration_ms: number
+}

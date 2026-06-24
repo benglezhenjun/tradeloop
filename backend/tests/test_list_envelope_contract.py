@@ -20,6 +20,7 @@ def _build_app(db):
     from app.api import plan as plan_api
     from app.api import position as position_api
     from app.api import review as review_api
+    from app.api import screening as screening_api
     from app.api import strategies as strategies_api
     from app.api import trade as trade_api
     from app.api import watchlist as watchlist_api
@@ -33,6 +34,7 @@ def _build_app(db):
     app.include_router(plan_api.router, prefix="/api")
     app.include_router(trade_api.router, prefix="/api")
     app.include_router(position_api.router, prefix="/api")
+    app.include_router(screening_api.router)
 
     def override_get_db():
         yield db
@@ -58,6 +60,7 @@ LIST_ENDPOINTS = [
     "/api/plan",
     "/api/trade",
     "/api/position",
+    "/api/screening/history/1",  # 策略历史运行记录（空库返回空信封）
 ]
 
 
