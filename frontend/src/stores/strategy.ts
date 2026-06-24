@@ -15,7 +15,7 @@ export const useStrategyStore = defineStore('strategy', () => {
     loading.value = true
     try {
       const res = await listStrategies()
-      strategies.value = res.data.strategies
+      strategies.value = res.data.items
     } finally {
       loading.value = false
     }

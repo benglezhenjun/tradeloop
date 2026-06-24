@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
+from app.api.envelope import list_envelope
 from app.database import get_db
 from app.services import strategy as strategy_svc
 from app.services.conditions import registry
@@ -39,8 +40,8 @@ class ConditionsUpdate(BaseModel):
 
 @router.get("")
 def list_strategies(db: Session = Depends(get_db)):
-    """获取所有策略列表"""
-    return {"strategies": strategy_svc.list_strategies(db)}
+    """获取所有策略列表（统一列表信封 {items,total}）"""
+    return list_envelope(strategy_svc.list_strategies(db))
 
 
 @router.get("/conditions/all")

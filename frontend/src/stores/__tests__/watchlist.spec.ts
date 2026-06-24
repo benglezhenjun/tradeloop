@@ -26,9 +26,9 @@ describe('useWatchlistStore', () => {
     vi.clearAllMocks()
   })
 
-  it('fetchGroups 从 res.data.groups 写入分组', async () => {
+  it('fetchGroups 从 res.data.items 写入分组', async () => {
     const groups = [{ id: 1, name: '核心池', description: '', stock_count: 0 }]
-    vi.mocked(listWatchlistGroups).mockResolvedValue({ data: { groups } } as never)
+    vi.mocked(listWatchlistGroups).mockResolvedValue({ data: { items: groups, total: 1 } } as never)
     const store = useWatchlistStore()
 
     await store.fetchGroups()
@@ -37,7 +37,7 @@ describe('useWatchlistStore', () => {
   })
 
   it('fetchStocks 传 groupId 时走分组端点', async () => {
-    vi.mocked(getGroupStocks).mockResolvedValue({ data: { stocks: [{ ts_code: '600000.SH' }] } } as never)
+    vi.mocked(getGroupStocks).mockResolvedValue({ data: { items: [{ ts_code: '600000.SH' }], total: 1 } } as never)
     const store = useWatchlistStore()
 
     await store.fetchStocks(7)
@@ -48,7 +48,7 @@ describe('useWatchlistStore', () => {
   })
 
   it('fetchStocks 不传 groupId 时走全量端点', async () => {
-    vi.mocked(getAllWatchlistStocks).mockResolvedValue({ data: { stocks: [] } } as never)
+    vi.mocked(getAllWatchlistStocks).mockResolvedValue({ data: { items: [], total: 0 } } as never)
     const store = useWatchlistStore()
 
     await store.fetchStocks(null)
@@ -58,7 +58,7 @@ describe('useWatchlistStore', () => {
   })
 
   it('fetchStocks 结束后 loading 复位为 false', async () => {
-    vi.mocked(getAllWatchlistStocks).mockResolvedValue({ data: { stocks: [] } } as never)
+    vi.mocked(getAllWatchlistStocks).mockResolvedValue({ data: { items: [], total: 0 } } as never)
     const store = useWatchlistStore()
 
     await store.fetchStocks(null)
@@ -68,8 +68,8 @@ describe('useWatchlistStore', () => {
 
   it('addGroup 成功返回 true 并触发刷新', async () => {
     vi.mocked(createWatchlistGroup).mockResolvedValue({} as never)
-    vi.mocked(listWatchlistGroups).mockResolvedValue({ data: { groups: [] } } as never)
-    vi.mocked(getAllWatchlistStocks).mockResolvedValue({ data: { stocks: [] } } as never)
+    vi.mocked(listWatchlistGroups).mockResolvedValue({ data: { items: [], total: 0 } } as never)
+    vi.mocked(getAllWatchlistStocks).mockResolvedValue({ data: { items: [], total: 0 } } as never)
     const store = useWatchlistStore()
 
     const ok = await store.addGroup('新分组', '描述')

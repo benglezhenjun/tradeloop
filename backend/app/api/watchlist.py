@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
+from app.api.envelope import list_envelope
 from app.database import get_db
 from app.errors import raise_service_error
 from app.services import watchlist as watchlist_svc
@@ -38,8 +39,8 @@ class BatchAdd(BaseModel):
 
 @router.get("/groups")
 def list_groups(db: Session = Depends(get_db)):
-    """获取所有自选股分组"""
-    return {"groups": watchlist_svc.list_groups(db)}
+    """获取所有自选股分组（统一列表信封 {items,total}）"""
+    return list_envelope(watchlist_svc.list_groups(db))
 
 
 @router.post("/groups")
@@ -73,7 +74,7 @@ def group_stocks(group_id: int, db: Session = Depends(get_db)):
     stocks = watchlist_svc.get_group_stocks(db, group_id)
     if stocks is None:
         raise HTTPException(status_code=404, detail=f"分组 {group_id} 不存在")
-    return {"stocks": stocks}
+    return list_envelope(stocks)
 
 
 @router.post("/groups/{group_id}/stocks")
@@ -97,8 +98,8 @@ def remove_stock(group_id: int, ts_code: str, db: Session = Depends(get_db)):
 
 @router.get("/stocks")
 def all_stocks(db: Session = Depends(get_db)):
-    """获取所有自选股（去重，含最新行情）"""
-    return {"stocks": watchlist_svc.get_all_stocks(db)}
+    """获取所有自选股（去重，含最新行情；统一列表信封 {items,total}）"""
+    return list_envelope(watchlist_svc.get_all_stocks(db))
 
 
 @router.post("/stocks/batch")

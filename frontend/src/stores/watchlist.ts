@@ -23,7 +23,7 @@ export const useWatchlistStore = defineStore('watchlist', () => {
 
   async function fetchGroups() {
     const res = await listWatchlistGroups()
-    groups.value = res.data.groups
+    groups.value = res.data.items
   }
 
   async function fetchStocks(groupId?: number | null) {
@@ -31,10 +31,10 @@ export const useWatchlistStore = defineStore('watchlist', () => {
     try {
       if (groupId != null) {
         const res = await getGroupStocks(groupId)
-        stocks.value = res.data.stocks
+        stocks.value = res.data.items
       } else {
         const res = await getAllWatchlistStocks()
-        stocks.value = res.data.stocks
+        stocks.value = res.data.items
       }
     } finally {
       loading.value = false

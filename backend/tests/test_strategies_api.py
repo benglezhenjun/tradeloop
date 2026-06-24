@@ -36,7 +36,7 @@ def _create(client, name="动量策略", description="测试用"):
 def test_list_empty(client):
     resp = client.get("/api/strategies")
     assert resp.status_code == 200
-    assert resp.json() == {"strategies": []}
+    assert resp.json() == {"items": [], "total": 0}
 
 
 def test_create_then_list(client):
@@ -46,8 +46,9 @@ def test_create_then_list(client):
 
     resp = client.get("/api/strategies")
     body = resp.json()
-    assert len(body["strategies"]) == 1
-    row = body["strategies"][0]
+    assert body["total"] == 1
+    assert len(body["items"]) == 1
+    row = body["items"][0]
     assert row["name"] == "策略A"
     assert row["condition_count"] == 0
     assert row["is_enabled"] is True

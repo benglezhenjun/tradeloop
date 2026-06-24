@@ -5,6 +5,7 @@
  */
 import axios from 'axios'
 
+import type { ListEnvelope } from '@/types/common'
 import type { Position, PositionDetail, PositionListFilter, PositionSummary } from '@/types/position'
 import type {
   GeneratePlansResponse,
@@ -22,7 +23,8 @@ import type {
   SentimentSummary,
 } from '@/types/sentiment'
 import type { TradeCreateData, TradeDetailResponse, TradeListFilter, TradeListResponse } from '@/types/trade'
-import type { StockSearchResult } from '@/types/watchlist'
+import type { Strategy } from '@/types/strategy'
+import type { StockSearchResult, WatchlistGroup, WatchlistStock } from '@/types/watchlist'
 
 export const http = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000',
@@ -47,7 +49,7 @@ export const getAvailableDates = () => http.get('/api/data/dates')
 export const triggerSync = () => http.post('/api/data/sync/trigger')
 
 // ---- 策略 ----
-export const listStrategies = () => http.get('/api/strategies')
+export const listStrategies = () => http.get<ListEnvelope<Strategy>>('/api/strategies')
 export const getStrategy = (id: number) => http.get(`/api/strategies/${id}`)
 export const getAllConditions = () => http.get('/api/strategies/conditions/all')
 export const createStrategy = (data: { name: string; description?: string }) =>
@@ -159,17 +161,18 @@ export const getSentimentDetail = (tradeDate: string) =>
   http.get<SentimentDetail>(`/api/dashboard/sentiment/detail/${tradeDate}`)
 
 // ---- 自选股 ----
-export const listWatchlistGroups = () => http.get('/api/watchlist/groups')
+export const listWatchlistGroups = () => http.get<ListEnvelope<WatchlistGroup>>('/api/watchlist/groups')
 export const createWatchlistGroup = (name: string, description = '') =>
   http.post('/api/watchlist/groups', { name, description })
 export const updateWatchlistGroup = (id: number, data: { name?: string; description?: string; sort_order?: number }) =>
   http.patch(`/api/watchlist/groups/${id}`, data)
 export const deleteWatchlistGroup = (id: number) => http.delete(`/api/watchlist/groups/${id}`)
-export const getGroupStocks = (groupId: number) => http.get(`/api/watchlist/groups/${groupId}/stocks`)
+export const getGroupStocks = (groupId: number) =>
+  http.get<ListEnvelope<WatchlistStock>>(`/api/watchlist/groups/${groupId}/stocks`)
 export const addStockToGroup = (groupId: number, tsCode: string, note = '') =>
   http.post(`/api/watchlist/groups/${groupId}/stocks`, { ts_code: tsCode, note })
 export const removeStockFromGroup = (groupId: number, tsCode: string) =>
   http.delete(`/api/watchlist/groups/${groupId}/stocks/${tsCode}`)
-export const getAllWatchlistStocks = () => http.get('/api/watchlist/stocks')
+export const getAllWatchlistStocks = () => http.get<ListEnvelope<WatchlistStock>>('/api/watchlist/stocks')
 export const batchAddStocks = (groupId: number, tsCodes: string[]) =>
   http.post('/api/watchlist/stocks/batch', { group_id: groupId, ts_codes: tsCodes })

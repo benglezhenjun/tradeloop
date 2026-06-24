@@ -48,16 +48,16 @@ def _create_group(client, name="我的自选"):
 def test_list_groups_empty(client):
     resp = client.get("/api/watchlist/groups")
     assert resp.status_code == 200
-    assert resp.json() == {"groups": []}
+    assert resp.json() == {"items": [], "total": 0}
 
 
 def test_create_and_list_group(client):
     created = _create_group(client, "核心池")
     assert created["name"] == "核心池"
 
-    groups = client.get("/api/watchlist/groups").json()["groups"]
-    assert len(groups) == 1
-    assert groups[0]["name"] == "核心池"
+    body = client.get("/api/watchlist/groups").json()
+    assert body["total"] == 1
+    assert body["items"][0]["name"] == "核心池"
 
 
 def test_patch_group(client):
@@ -88,9 +88,9 @@ def test_add_and_get_stock(client, db):
     assert resp.status_code == 200
     assert resp.json()["ts_code"] == "600000.SH"
 
-    stocks = client.get(f"/api/watchlist/groups/{g['id']}/stocks").json()["stocks"]
-    assert len(stocks) == 1
-    assert stocks[0]["ts_code"] == "600000.SH"
+    body = client.get(f"/api/watchlist/groups/{g['id']}/stocks").json()
+    assert body["total"] == 1
+    assert body["items"][0]["ts_code"] == "600000.SH"
 
 
 def test_add_unknown_ts_code_maps_to_400(client):
@@ -128,7 +128,7 @@ def test_remove_stock(client, db):
 def test_all_stocks_empty(client):
     resp = client.get("/api/watchlist/stocks")
     assert resp.status_code == 200
-    assert resp.json() == {"stocks": []}
+    assert resp.json() == {"items": [], "total": 0}
 
 
 def test_batch_add(client, db):
@@ -142,8 +142,9 @@ def test_batch_add(client, db):
     )
     assert resp.status_code == 200
 
-    stocks = client.get("/api/watchlist/stocks").json()["stocks"]
-    assert len(stocks) == 2
+    body = client.get("/api/watchlist/stocks").json()
+    assert body["total"] == 2
+    assert len(body["items"]) == 2
 
 
 def test_batch_add_missing_group_maps_to_400(client):
