@@ -16,26 +16,23 @@ from app.services.conditions import registry
 # 内置策略定义（系统初始化时自动创建）
 # ====================================================
 
+# 通用示例策略：仅用于演示插件式选股引擎（多条件 AND 组合），均为教科书式简单组合，
+# 不代表任何具体投资建议。用户可在「策略管理」页自由增删条件、组合自己的策略。
 BUILTIN_STRATEGIES = [
     {
-        "name": "策略1：热点追踪",
-        "description": "筛选当前最热门、流动性好、基本面过关的股票。适合趋势行情中寻找强势股。",
+        "name": "示例策略：放量大盘股",
+        "description": "演示用：成交额与市值双门槛，过滤出流动性好的大盘股。",
         "conditions": [
             {"code": "amount_gt",     "params": {"threshold": 2},   "sort": 1},  # 成交额 ≥ 2 亿元
-            {"code": "amount_rank",   "params": {"top_n": 100},     "sort": 2},
-            {"code": "market_cap_gt", "params": {"threshold": 100}, "sort": 3},  # 总市值 ≥ 100 亿元
-            {"code": "ma_proximity",  "params": {"ma_period": 20, "deviation_max": 0.06}, "sort": 4},
-            {"code": "profit_growth", "params": {"years": 3},                 "sort": 5},
+            {"code": "market_cap_gt", "params": {"threshold": 100}, "sort": 2},  # 总市值 ≥ 100 亿元
         ],
     },
     {
-        "name": "策略2：年线回踩",
-        "description": "寻找曾经大涨、年线趋势向上、当前价格回踩年线附近的股票。适合寻找二次启动机会。",
+        "name": "示例策略：站上 20 日线",
+        "description": "演示用：收盘价站上 20 日均线且偏离有限，叠加成交额门槛。",
         "conditions": [
-            {"code": "ma_slope",         "params": {"ma_period": 240, "slope_window": 20, "slope_max": 0.002}, "sort": 1},
-            {"code": "price_rise_range", "params": {"days": 240, "min_rise": 0.5},            "sort": 2},
-            {"code": "ma_proximity",     "params": {"ma_period": 240, "deviation_max": 0.06}, "sort": 3},
-            {"code": "multi_ma_alignment", "params": {"mode": "loose"},                       "sort": 4},
+            {"code": "ma_proximity", "params": {"ma_period": 20, "deviation_max": 0.08}, "sort": 1},
+            {"code": "amount_gt",    "params": {"threshold": 1}, "sort": 2},  # 成交额 ≥ 1 亿元
         ],
     },
 ]
