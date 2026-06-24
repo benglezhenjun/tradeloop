@@ -6,6 +6,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
+from app.api.envelope import list_envelope
 from app.database import get_db
 from app.errors import raise_service_error
 from app.services import trade as trade_service
@@ -43,7 +44,7 @@ def list_trades(
     result = trade_service.list_trades(db, ts_code=ts_code, direction=direction)
     if "error" in result:
         raise_service_error(result)
-    return result
+    return list_envelope(result["trades"])
 
 
 @router.get("/trade/{trade_id}")

@@ -42,7 +42,7 @@ export const usePositionStore = defineStore('position', () => {
     clearError()
     try {
       const res = await listPositions(filter)
-      positions.value = res.data.positions ?? []
+      positions.value = res.data.items ?? []
       return positions.value
     } catch (err: unknown) {
       error.value = getErrorMessage(err, '加载持仓失败')

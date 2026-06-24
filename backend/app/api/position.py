@@ -5,6 +5,7 @@ from typing import Literal
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
+from app.api.envelope import list_envelope
 from app.database import get_db
 from app.errors import raise_service_error
 from app.services import position as position_service
@@ -21,7 +22,7 @@ def list_positions(
     result = position_service.list_positions(db, status=status)
     if "error" in result:
         raise_service_error(result)
-    return result
+    return list_envelope(result["positions"])
 
 
 @router.get("/position/summary")

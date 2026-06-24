@@ -36,7 +36,7 @@ export const usePlanStore = defineStore('plan', () => {
     clearError()
     try {
       const res = await listPlans(filters)
-      plans.value = res.data
+      plans.value = res.data.items
       return plans.value
     } catch (err: unknown) {
       error.value = getErrorMessage(err, '加载计划失败')

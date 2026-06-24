@@ -85,10 +85,10 @@ class TestPositionApi:
 
         assert holding.status_code == 200
         assert closed.status_code == 200
-        assert len(holding.json()["positions"]) == 1
-        assert holding.json()["positions"][0]["ts_code"] == "600000.SH"
-        assert len(closed.json()["positions"]) == 1
-        assert closed.json()["positions"][0]["ts_code"] == "600001.SH"
+        assert holding.json()["total"] == 1
+        assert holding.json()["items"][0]["ts_code"] == "600000.SH"
+        assert closed.json()["total"] == 1
+        assert closed.json()["items"][0]["ts_code"] == "600001.SH"
 
     def test_position_summary_uses_latest_quote(self, client, db):
         insert_stock(db, "600000.SH", "浦发银行")

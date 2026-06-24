@@ -36,7 +36,7 @@ export const useTradeStore = defineStore('trade', () => {
     clearError()
     try {
       const res = await listTrades(filter)
-      trades.value = res.data.trades ?? []
+      trades.value = res.data.items ?? []
       return trades.value
     } catch (err: unknown) {
       error.value = getErrorMessage(err, '加载交易记录失败')

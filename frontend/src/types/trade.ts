@@ -34,10 +34,6 @@ export interface TradeListFilter {
   direction?: TradeDirection
 }
 
-export interface TradeListResponse {
-  trades: TradeRecord[]
-}
-
 export interface TradeDetailResponse {
   trade: TradeRecord
 }

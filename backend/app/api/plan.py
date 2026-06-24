@@ -16,6 +16,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
+from app.api.envelope import list_envelope
 from app.database import get_db
 from app.errors import raise_service_error
 from app.services import plan as plan_service
@@ -72,8 +73,8 @@ def list_plans(
     ts_code: str | None = Query(None),
     db: Session = Depends(get_db),
 ):
-    """获取计划列表，支持按状态和股票筛选"""
-    return plan_service.get_plans(db, status=status, ts_code=ts_code)
+    """获取计划列表，支持按状态和股票筛选（统一列表信封 {items,total}）"""
+    return list_envelope(plan_service.get_plans(db, status=status, ts_code=ts_code))
 
 
 @router.get("/plan/{plan_id}")

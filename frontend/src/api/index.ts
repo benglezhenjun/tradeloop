@@ -23,7 +23,7 @@ import type {
   SentimentHistoryPoint,
   SentimentSummary,
 } from '@/types/sentiment'
-import type { TradeCreateData, TradeDetailResponse, TradeListFilter, TradeListResponse } from '@/types/trade'
+import type { TradeCreateData, TradeDetailResponse, TradeListFilter, TradeRecord } from '@/types/trade'
 import type { Strategy } from '@/types/strategy'
 import type { StockSearchResult, WatchlistGroup, WatchlistStock } from '@/types/watchlist'
 
@@ -101,7 +101,8 @@ export const getReport = (id: number) => http.get(`/api/analysis/reports/${id}`)
 export const generatePlans = (tsCode: string) =>
   http.post<GeneratePlansResponse>(`/api/plan/generate/${tsCode}`, null, { timeout: 180_000 })
 export const createPlan = (data: PlanCreateData) => http.post<TradingPlan>('/api/plan', data)
-export const listPlans = (params?: PlanListFilter) => http.get<TradingPlan[]>('/api/plan', { params })
+export const listPlans = (params?: PlanListFilter) =>
+  http.get<ListEnvelope<TradingPlan>>('/api/plan', { params })
 export const getPlan = (id: number) => http.get<TradingPlan>(`/api/plan/${id}`)
 export const updatePlan = (id: number, data: PlanUpdateData) => http.put<TradingPlan>(`/api/plan/${id}`, data)
 export const updatePlanStatus = (id: number, status: PlanStatus) =>
@@ -111,13 +112,13 @@ export const deletePlan = (id: number) => http.delete(`/api/plan/${id}`)
 // ---- 交易记录 (V6) ----
 export const createTrade = (data: TradeCreateData) => http.post('/api/trade', data)
 export const listTrades = (params?: TradeListFilter) =>
-  http.get<TradeListResponse>('/api/trade', { params })
+  http.get<ListEnvelope<TradeRecord>>('/api/trade', { params })
 export const getTrade = (id: number) => http.get<TradeDetailResponse>(`/api/trade/${id}`)
 export const deleteTrade = (id: number) => http.delete(`/api/trade/${id}`)
 
 // ---- 持仓 (V6) ----
 export const listPositions = (params?: PositionListFilter) =>
-  http.get<{ positions: Position[] }>('/api/position', { params })
+  http.get<ListEnvelope<Position>>('/api/position', { params })
 export const getPosition = (tsCode: string) => http.get<PositionDetail>(`/api/position/${tsCode}`)
 export const getPositionSummary = () => http.get<PositionSummary>('/api/position/summary')
 export const recalculatePosition = (tsCode: string) =>
