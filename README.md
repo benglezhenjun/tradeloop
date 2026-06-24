@@ -153,9 +153,16 @@ tradeloop/
 
 ## 测试
 ```bash
-cd backend && uv run python -m pytest tests/ -q      # 230 passed
+cd backend && uv run python -m pytest tests/ -q      # 后端单测/契约
 cd backend && uv run ruff check .
 cd frontend && pnpm type-check && pnpm build
+cd frontend && pnpm test                             # vitest 前端单测
+cd frontend && pnpm test:e2e                          # Playwright 烟测（首次需 playwright install chromium）
+```
+
+## 一键演示
+```powershell
+pwsh scripts/demo_walkthrough.ps1   # 灌合成样例库 → 起后端 → 起前端 → 开浏览器
 ```
 
 ## 文档
