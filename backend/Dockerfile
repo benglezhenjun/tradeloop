@@ -1,13 +1,20 @@
 FROM python:3.12-slim
 
-# uv（从官方镜像拷二进制；版本可按当时可用微调）
-COPY --from=ghcr.io/astral-sh/uv:0.11.3 /uv /bin/uv
+# 镜像源可配（默认国际源；国内构建可传 PyPI 镜像，见 README Docker 段）：
+#   docker compose build 时设置 PIP_INDEX_URL / UV_INDEX_URL 环境变量
+ARG PIP_INDEX_URL=https://pypi.org/simple
+ARG UV_INDEX_URL=https://pypi.org/simple
 
-ENV UV_LINK_MODE=copy \
+ENV PIP_INDEX_URL=${PIP_INDEX_URL} \
+    UV_DEFAULT_INDEX=${UV_INDEX_URL} \
+    UV_LINK_MODE=copy \
     UV_PROJECT_ENVIRONMENT=/app/backend/.venv \
     TRADELOOP_ENABLE_SCHEDULER=0
 
 WORKDIR /app/backend
+
+# 通过 pip 安装 uv（不依赖 ghcr.io，国内更稳）
+RUN pip install --no-cache-dir uv
 
 # 先装依赖（利用缓存）
 COPY backend/pyproject.toml backend/uv.lock ./

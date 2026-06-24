@@ -99,6 +99,14 @@ docker compose up --build
 ```
 - 前端：http://localhost:5173 ，后端 API 文档：http://localhost:8000/docs
 - 自动使用内置合成数据 `data/sample.db`，无需 token。
+- **国内网络**：默认走国际源（pypi.org / npmjs / ghcr 已不再依赖）。若构建慢/超时，用镜像源构建：
+  ```bash
+  PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple \
+  UV_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple \
+  NPM_REGISTRY=https://registry.npmmirror.com \
+  docker compose build && docker compose up
+  ```
+  Windows PowerShell 可在 `docker-compose.yml` 同级放 `.env` 写这三行后再 `docker compose up --build`。
 
 ### 方式二：本地手动
 ```bash
