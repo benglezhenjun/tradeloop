@@ -21,9 +21,9 @@ BUILTIN_STRATEGIES = [
         "name": "策略1：热点追踪",
         "description": "筛选当前最热门、流动性好、基本面过关的股票。适合趋势行情中寻找强势股。",
         "conditions": [
-            {"code": "amount_gt",     "params": {"threshold": 2_000_000_000}, "sort": 1},
-            {"code": "amount_rank",   "params": {"top_n": 100},               "sort": 2},
-            {"code": "market_cap_gt", "params": {"threshold": 10_000_000_000}, "sort": 3},
+            {"code": "amount_gt",     "params": {"threshold": 2},   "sort": 1},  # 成交额 ≥ 2 亿元
+            {"code": "amount_rank",   "params": {"top_n": 100},     "sort": 2},
+            {"code": "market_cap_gt", "params": {"threshold": 100}, "sort": 3},  # 总市值 ≥ 100 亿元
             {"code": "ma_proximity",  "params": {"ma_period": 20, "deviation_max": 0.06}, "sort": 4},
             {"code": "profit_growth", "params": {"years": 3},                 "sort": 5},
         ],
@@ -176,8 +176,8 @@ def update_strategy_conditions(db: Session, strategy_id: int, conditions: list[d
     """
     替换策略的条件列表
 
-    conditions 格式：
-    [{"condition_code": "amount_gt", "params": {"threshold": 2e9}, "is_enabled": true, "sort_order": 1}]
+    conditions 格式（threshold 单位见各条件定义，amount_gt/market_cap_gt 为亿元）：
+    [{"condition_code": "amount_gt", "params": {"threshold": 2}, "is_enabled": true, "sort_order": 1}]
     """
     strategy = db.get(Strategy, strategy_id)
     if not strategy:

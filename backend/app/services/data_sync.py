@@ -94,7 +94,21 @@ def _session_scope():
 def init_tables():
     backend_root = Path(__file__).resolve().parents[2]
     alembic_cfg = Config(str(backend_root / "alembic.ini"))
-    command.upgrade(alembic_cfg, "head")
+
+    from sqlalchemy import inspect as sa_inspect
+
+    import app.models  # noqa: F401 — 触发所有表注册到 Base.metadata
+    from app.database import Base, engine
+
+    if sa_inspect(engine).has_table("alembic_version"):
+        # 既有库：照迁移链增量升级
+        command.upgrade(alembic_cfg, "head")
+    else:
+        # 全新空库：迁移链并未创建 stock_basic / daily_quote 等数据表
+        # （它们历史上由建库脚本裸建），直接 upgrade head 会在引用 stock_basic
+        # 的清理迁移处崩。改为按模型一次建齐全表，再 stamp 到 head。
+        Base.metadata.create_all(bind=engine)
+        command.stamp(alembic_cfg, "head")
 
 
 def sync_stock_basic():

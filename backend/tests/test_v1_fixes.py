@@ -24,27 +24,43 @@ def test_foreign_keys_enabled(engine):
     assert result == 1, f"foreign_keys 应为 1，实际为 {result}"
 
 
-def test_init_tables_runs_alembic_upgrade_head(monkeypatch):
+def test_builtin_strategy_thresholds_use_yi_unit():
+    """回归：内置策略的 amount_gt/market_cap_gt 阈值单位是亿元，不能误传元值。
+
+    条件 evaluate 先把成交额/市值换算成亿元再比较，若阈值传成 2e9 这类元值，
+    默认策略会几乎选不出票（曾经的真 bug）。
+    """
+    from app.services.strategy import BUILTIN_STRATEGIES
+
+    yi_unit_codes = {"amount_gt", "market_cap_gt"}
+    for spec in BUILTIN_STRATEGIES:
+        for cond in spec["conditions"]:
+            if cond["code"] in yi_unit_codes:
+                threshold = cond["params"]["threshold"]
+                assert threshold < 100_000, (
+                    f"{spec['name']} 的 {cond['code']} 阈值 {threshold} 像是元值，"
+                    f"应为亿元口径（如 2、100）"
+                )
+
+
+def test_init_tables_on_fresh_db_creates_all_tables(tmp_path, monkeypatch):
+    """全新空库：init_tables 应一次建齐全表并 stamp head，绝不在缺 stock_basic 处崩。"""
+    import app.config
+    import app.database
+    from sqlalchemy import create_engine, inspect as sa_inspect
+
     from app.services import data_sync
 
-    called: dict = {}
+    url = f"sqlite:///{tmp_path / 'fresh.db'}"
+    eng = create_engine(url)
+    monkeypatch.setattr(app.config, "DATABASE_URL", url)
+    monkeypatch.setattr(app.database, "engine", eng)
 
-    class DummyConfig:
-        def __init__(self, path):
-            called["path"] = path
+    data_sync.init_tables()  # 历史上这里会抛 no such table: stock_basic
 
-    def fake_upgrade(cfg, revision):
-        called["cfg"] = cfg
-        called["revision"] = revision
-
-    monkeypatch.setattr(data_sync, "Config", DummyConfig)
-    monkeypatch.setattr(data_sync.command, "upgrade", fake_upgrade)
-
-    data_sync.init_tables()
-
-    assert called["path"].endswith("backend\\alembic.ini")
-    assert isinstance(called["cfg"], DummyConfig)
-    assert called["revision"] == "head"
+    insp = sa_inspect(eng)
+    for table in ("stock_basic", "daily_quote", "trade_record", "position", "strategy", "alembic_version"):
+        assert insp.has_table(table), f"空库 init 后缺表 {table}"
 
 
 # ──────────────────────────────────────────────
