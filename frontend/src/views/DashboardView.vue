@@ -85,14 +85,24 @@
         <template #header>
           <span class="section-title">行业热度（按今日平均涨跌幅排序）</span>
         </template>
-        <div ref="industryChartRef" :style="{ height: industryChartHeight + 'px' }" />
+        <div
+          ref="industryChartRef"
+          role="img"
+          aria-label="行业热度横向条形图，按今日平均涨跌幅排序"
+          :style="{ height: industryChartHeight + 'px' }"
+        />
       </el-card>
 
       <el-card shadow="never" class="section-card" v-if="store.breadth.length > 0">
         <template #header>
           <span class="section-title">市场宽度趋势（近 {{ store.breadth.length }} 个交易日）</span>
         </template>
-        <div ref="breadthChartRef" style="height: 280px" />
+        <div
+          ref="breadthChartRef"
+          role="img"
+          aria-label="市场宽度趋势折线图，展示近期每日上涨、下跌、平盘家数"
+          style="height: 280px"
+        />
       </el-card>
     </template>
   </div>

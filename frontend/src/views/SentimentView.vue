@@ -68,7 +68,12 @@
             <span>{{ metric.label }}</span>
             <strong>{{ metric.currentText }}</strong>
           </div>
-          <div class="trend-chart" :ref="bindTrendRef(metric.key)"></div>
+          <div
+            class="trend-chart"
+            role="img"
+            :aria-label="`${metric.label} 近 ${store.currentDays} 天趋势图`"
+            :ref="bindTrendRef(metric.key)"
+          ></div>
         </article>
       </div>
       <div v-else class="empty-state trend-empty">暂无情绪趋势数据</div>
