@@ -37,43 +37,43 @@
       </el-card>
 
       <el-row :gutter="12" class="overview-row">
-        <el-col :span="4">
-          <el-card shadow="never" class="ov-card up-card">
-            <div class="ov-value">{{ store.overview.up_count.toLocaleString() }}</div>
+        <el-col :xs="12" :sm="8" :md="4">
+          <el-card shadow="never" class="ov-card up-card is-hover-lift">
+            <div class="ov-value num">{{ store.overview.up_count.toLocaleString() }}</div>
             <div class="ov-label">上涨</div>
           </el-card>
         </el-col>
-        <el-col :span="4">
-          <el-card shadow="never" class="ov-card down-card">
-            <div class="ov-value">{{ store.overview.down_count.toLocaleString() }}</div>
+        <el-col :xs="12" :sm="8" :md="4">
+          <el-card shadow="never" class="ov-card down-card is-hover-lift">
+            <div class="ov-value num">{{ store.overview.down_count.toLocaleString() }}</div>
             <div class="ov-label">下跌</div>
           </el-card>
         </el-col>
-        <el-col :span="4">
-          <el-card shadow="never" class="ov-card limit-up-card">
-            <div class="ov-value">{{ store.overview.limit_up_count.toLocaleString() }}</div>
+        <el-col :xs="12" :sm="8" :md="4">
+          <el-card shadow="never" class="ov-card limit-up-card is-hover-lift">
+            <div class="ov-value num">{{ store.overview.limit_up_count.toLocaleString() }}</div>
             <div class="ov-label">涨停</div>
           </el-card>
         </el-col>
-        <el-col :span="4">
-          <el-card shadow="never" class="ov-card limit-down-card">
-            <div class="ov-value">{{ store.overview.limit_down_count.toLocaleString() }}</div>
+        <el-col :xs="12" :sm="8" :md="4">
+          <el-card shadow="never" class="ov-card limit-down-card is-hover-lift">
+            <div class="ov-value num">{{ store.overview.limit_down_count.toLocaleString() }}</div>
             <div class="ov-label">跌停</div>
           </el-card>
         </el-col>
-        <el-col :span="4">
-          <el-card shadow="never" class="ov-card">
-            <div class="ov-value">{{ store.overview.total_amount_yi.toFixed(0) }}亿</div>
+        <el-col :xs="12" :sm="8" :md="4">
+          <el-card shadow="never" class="ov-card is-hover-lift">
+            <div class="ov-value num">{{ store.overview.total_amount_yi.toFixed(0) }}亿</div>
             <div class="ov-label">成交额</div>
           </el-card>
         </el-col>
-        <el-col :span="4">
+        <el-col :xs="12" :sm="8" :md="4">
           <el-card
             shadow="never"
-            class="ov-card"
+            class="ov-card is-hover-lift"
             :class="store.overview.avg_pct_chg >= 0 ? 'up-card' : 'down-card'"
           >
-            <div class="ov-value">
+            <div class="ov-value num">
               {{ store.overview.avg_pct_chg >= 0 ? '+' : '' }}{{ store.overview.avg_pct_chg.toFixed(2) }}%
             </div>
             <div class="ov-label">平均涨跌幅</div>
@@ -101,16 +101,21 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 
-import { echarts, type ECharts } from '@/lib/echarts'
+import { useEChart } from '@/composables/useEChart'
 import { useDashboardStore } from '@/stores/dashboard'
+
+const UP = '#ff5a6e'
+const DOWN = '#25d0a0'
+const FLAT = '#8a90a2'
+const LABEL = 'rgba(255,255,255,0.5)'
 
 const store = useDashboardStore()
 
 const industryChartRef = ref<HTMLElement | null>(null)
 const breadthChartRef = ref<HTMLElement | null>(null)
 
-let industryChart: ECharts | null = null
-let breadthChart: ECharts | null = null
+const industryChart = useEChart(industryChartRef)
+const breadthChart = useEChart(breadthChartRef)
 
 const industryChartHeight = computed(() => Math.max(400, store.industryHeat.length * 28))
 
@@ -174,10 +179,7 @@ function formatSignedPercent(value: number) {
 }
 
 function renderIndustryChart() {
-  if (!industryChartRef.value || store.industryHeat.length === 0) return
-  if (!industryChart) {
-    industryChart = echarts.init(industryChartRef.value)
-  }
+  if (store.industryHeat.length === 0) return
 
   const data = [...store.industryHeat].reverse()
   const industries = data.map((d) => d.industry)
@@ -217,14 +219,14 @@ function renderIndustryChart() {
         type: 'bar',
         data: values.map((v) => ({
           value: v,
-          itemStyle: { color: v >= 0 ? '#F56C6C' : '#67C23A' },
+          itemStyle: { color: v >= 0 ? UP : DOWN, borderRadius: [0, 3, 3, 0] },
         })),
         label: {
           show: true,
           position: (v: { data: { value: number } }) => (v.data.value >= 0 ? 'right' : 'left'),
           formatter: (p: { data: { value: number } }) => `${p.data.value >= 0 ? '+' : ''}${p.data.value.toFixed(2)}%`,
           fontSize: 11,
-          color: '#606266',
+          color: LABEL,
         },
       },
     ],
@@ -232,10 +234,7 @@ function renderIndustryChart() {
 }
 
 function renderBreadthChart() {
-  if (!breadthChartRef.value || store.breadth.length === 0) return
-  if (!breadthChart) {
-    breadthChart = echarts.init(breadthChartRef.value)
-  }
+  if (store.breadth.length === 0) return
 
   const dates = store.breadth.map((d) => d.trade_date.replace(/(\d{4})(\d{2})(\d{2})/, '$2/$3'))
   const upData = store.breadth.map((d) => d.up_count)
@@ -254,26 +253,26 @@ function renderBreadthChart() {
         type: 'line',
         data: upData,
         smooth: true,
-        areaStyle: { opacity: 0.15 },
-        lineStyle: { color: '#F56C6C' },
-        itemStyle: { color: '#F56C6C' },
+        areaStyle: { opacity: 0.12 },
+        lineStyle: { color: UP },
+        itemStyle: { color: UP },
       },
       {
         name: '下跌',
         type: 'line',
         data: downData,
         smooth: true,
-        areaStyle: { opacity: 0.15 },
-        lineStyle: { color: '#67C23A' },
-        itemStyle: { color: '#67C23A' },
+        areaStyle: { opacity: 0.12 },
+        lineStyle: { color: DOWN },
+        itemStyle: { color: DOWN },
       },
       {
         name: '平盘',
         type: 'line',
         data: flatData,
         smooth: true,
-        lineStyle: { color: '#909399', type: 'dashed' },
-        itemStyle: { color: '#909399' },
+        lineStyle: { color: FLAT, type: 'dashed' },
+        itemStyle: { color: FLAT },
       },
     ],
   })
@@ -312,11 +311,12 @@ onMounted(async () => {
 .date-label {
   font-size: 17px;
   font-weight: 600;
-  color: #303133;
+  color: var(--tl-text);
 }
 
 .overview-row {
   margin-bottom: 20px;
+  row-gap: 12px;
 }
 
 .sentiment-section {
@@ -332,7 +332,7 @@ onMounted(async () => {
 
 .section-meta {
   font-size: 12px;
-  color: #909399;
+  color: var(--tl-text-tertiary);
 }
 
 .sentiment-grid {
@@ -346,15 +346,21 @@ onMounted(async () => {
   padding: 14px 16px;
   min-height: 98px;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 255, 0.98)),
-    radial-gradient(circle at top right, rgba(64, 158, 255, 0.08), transparent 45%);
-  border: 1px solid #e8edf7;
-  box-shadow: 0 8px 24px rgba(18, 38, 63, 0.04);
+    radial-gradient(120% 120% at 100% 0%, rgba(255, 255, 255, 0.06), transparent 55%),
+    var(--tl-glass);
+  border: 1px solid var(--tl-border);
+  border-top-color: var(--tl-border-strong);
+  transition: transform var(--tl-transition), border-color var(--tl-transition);
+}
+
+.sentiment-tile:hover {
+  transform: translateY(-2px);
+  border-color: var(--tl-border-strong);
 }
 
 .sentiment-label {
   font-size: 12px;
-  color: #909399;
+  color: var(--tl-text-secondary);
   margin-bottom: 10px;
 }
 
@@ -362,7 +368,7 @@ onMounted(async () => {
   font-size: 20px;
   font-weight: 700;
   line-height: 1.2;
-  color: #1f2937;
+  color: var(--tl-text);
   word-break: break-word;
 }
 
@@ -370,27 +376,27 @@ onMounted(async () => {
   margin-top: 8px;
   font-size: 12px;
   line-height: 1.5;
-  color: #606266;
+  color: var(--tl-text-secondary);
 }
 
 .theme-red .sentiment-value {
-  color: #f56c6c;
+  color: var(--up-color);
 }
 
 .theme-green .sentiment-value {
-  color: #67c23a;
+  color: var(--down-color);
 }
 
 .theme-gold .sentiment-value {
-  color: #c47f17;
+  color: #fbbf24;
 }
 
 .theme-blue .sentiment-value {
-  color: #409eff;
+  color: #818cf8;
 }
 
 .theme-violet .sentiment-value {
-  color: #6f42c1;
+  color: #c4b5fd;
 }
 
 .ov-card {
@@ -401,29 +407,29 @@ onMounted(async () => {
 .ov-value {
   font-size: 24px;
   font-weight: 700;
-  color: #303133;
+  color: var(--tl-text);
 }
 
 .ov-label {
   font-size: 12px;
-  color: #909399;
+  color: var(--tl-text-secondary);
   margin-top: 4px;
 }
 
 .up-card .ov-value {
-  color: #f56c6c;
+  color: var(--up-color);
 }
 
 .down-card .ov-value {
-  color: #67c23a;
+  color: var(--down-color);
 }
 
 .limit-up-card .ov-value {
-  color: #c0392b;
+  color: var(--up-strong);
 }
 
 .limit-down-card .ov-value {
-  color: #27ae60;
+  color: var(--down-strong);
 }
 
 .section-card {
@@ -433,6 +439,6 @@ onMounted(async () => {
 .section-title {
   font-size: 14px;
   font-weight: 600;
-  color: #303133;
+  color: var(--tl-text);
 }
 </style>

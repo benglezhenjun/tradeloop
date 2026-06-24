@@ -1,0 +1,229 @@
+/**
+ * TradeLoop 暗色玻璃拟态主题（design tokens + Element Plus 暗色覆盖）
+ *
+ * 设计语言：暗色玻璃拟态 (glassmorphism) + 极光渐变 (aurora) 背景。
+ * - 背景：近黑靛底 + 固定的多色光晕，磨砂卡片"磨"的就是这层颜色。
+ * - 卡片：半透明 + backdrop-filter 模糊 + 顶部高光描边。
+ * - 分层玻璃：英雄页用强玻璃 (.glass-strong)，数据密集页用轻玻璃 (默认)，兼顾可读性与性能。
+ * - 涨跌：A 股惯例「红涨绿跌」，集中为 --up-color / --down-color。
+ */
+
+:root {
+  /* —— 品牌与极光色 —— */
+  --tl-brand: #6366f1;
+  --tl-brand-soft: #818cf8;
+  --tl-aurora-1: #6366f1;
+  --tl-aurora-2: #8b5cf6;
+  --tl-aurora-3: #14b8a6;
+  --tl-aurora-4: #f43f5e;
+
+  /* —— 暗色基底 —— */
+  --tl-bg: #0a0b14;
+  --tl-bg-soft: #0e1018;
+
+  /* —— 玻璃面 —— */
+  --tl-glass: rgba(255, 255, 255, 0.055);
+  --tl-glass-strong: rgba(255, 255, 255, 0.08);
+  --tl-glass-hover: rgba(255, 255, 255, 0.1);
+  --tl-border: rgba(255, 255, 255, 0.09);
+  --tl-border-strong: rgba(255, 255, 255, 0.16);
+  --tl-blur: 18px;
+
+  /* —— 文本 —— */
+  --tl-text: #eceef5;
+  --tl-text-secondary: rgba(255, 255, 255, 0.62);
+  --tl-text-tertiary: rgba(255, 255, 255, 0.4);
+
+  /* —— 涨跌（A 股红涨绿跌） —— */
+  --up-color: #ff5a6e;
+  --up-strong: #ff3b54;
+  --down-color: #25d0a0;
+  --down-strong: #11b98a;
+  --flat-color: #8a90a2;
+
+  /* —— 圆角 / 过渡 —— */
+  --tl-radius: 14px;
+  --tl-radius-sm: 10px;
+  --tl-transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  --tl-sidebar-w: 210px;
+}
+
+/* ───────────────────────── 全局背景 + 极光 ───────────────────────── */
+
+html.dark,
+body {
+  background-color: var(--tl-bg);
+}
+
+body {
+  color: var(--tl-text);
+}
+
+/* 固定极光层：所有内容之下，磨砂卡片透过它产生玻璃感 */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(38% 42% at 12% 8%, rgba(99, 102, 241, 0.42), transparent 70%),
+    radial-gradient(34% 38% at 88% 6%, rgba(139, 92, 246, 0.36), transparent 70%),
+    radial-gradient(42% 46% at 82% 92%, rgba(20, 184, 166, 0.3), transparent 72%),
+    radial-gradient(34% 40% at 8% 94%, rgba(244, 63, 94, 0.24), transparent 72%);
+  filter: blur(8px) saturate(125%);
+  pointer-events: none;
+}
+
+/* ───────────────────────── 玻璃工具类 ───────────────────────── */
+
+.glass {
+  background: var(--tl-glass);
+  backdrop-filter: blur(var(--tl-blur)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--tl-blur)) saturate(140%);
+  border: 1px solid var(--tl-border);
+  border-top-color: var(--tl-border-strong);
+  border-radius: var(--tl-radius);
+}
+
+.glass-strong {
+  background: var(--tl-glass-strong);
+  backdrop-filter: blur(26px) saturate(150%);
+  -webkit-backdrop-filter: blur(26px) saturate(150%);
+}
+
+/* 涨跌语义色 */
+.up {
+  color: var(--up-color);
+}
+.down {
+  color: var(--down-color);
+}
+.flat {
+  color: var(--flat-color);
+}
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ───────────────────────── Element Plus 暗色 + 玻璃覆盖 ───────────────────────── */
+
+html.dark {
+  /* 品牌主色 → 靛紫，呼应极光 */
+  --el-color-primary: #6366f1;
+  --el-color-primary-light-3: #4f52d6;
+  --el-color-primary-light-5: #3f43b8;
+  --el-color-primary-light-7: #2a2c66;
+  --el-color-primary-light-8: #20224d;
+  --el-color-primary-light-9: #171833;
+  --el-color-primary-dark-2: #818cf8;
+
+  /* 背景：让主区透出极光 */
+  --el-bg-color: transparent;
+  --el-bg-color-page: transparent;
+  --el-bg-color-overlay: #141622;
+
+  /* 文本 */
+  --el-text-color-primary: #eceef5;
+  --el-text-color-regular: rgba(255, 255, 255, 0.78);
+  --el-text-color-secondary: rgba(255, 255, 255, 0.55);
+  --el-text-color-placeholder: rgba(255, 255, 255, 0.35);
+
+  /* 边框 / 填充：半透明 */
+  --el-border-color: rgba(255, 255, 255, 0.12);
+  --el-border-color-light: rgba(255, 255, 255, 0.09);
+  --el-border-color-lighter: rgba(255, 255, 255, 0.07);
+  --el-border-color-extra-light: rgba(255, 255, 255, 0.05);
+  --el-fill-color: rgba(255, 255, 255, 0.08);
+  --el-fill-color-light: rgba(255, 255, 255, 0.05);
+  --el-fill-color-lighter: rgba(255, 255, 255, 0.04);
+  --el-fill-color-blank: transparent;
+}
+
+/* 卡片 → 磨砂玻璃 */
+html.dark .el-card {
+  background: var(--tl-glass);
+  backdrop-filter: blur(var(--tl-blur)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--tl-blur)) saturate(140%);
+  border: 1px solid var(--tl-border);
+  border-top-color: var(--tl-border-strong);
+  border-radius: var(--tl-radius);
+  transition:
+    transform var(--tl-transition),
+    border-color var(--tl-transition),
+    background var(--tl-transition);
+}
+
+html.dark .el-card.is-hover-lift:hover {
+  transform: translateY(-2px);
+  background: var(--tl-glass-hover);
+  border-color: var(--tl-border-strong);
+}
+
+html.dark .el-card__header {
+  border-bottom: 1px solid var(--tl-border);
+}
+
+/* 表格 → 透明玻璃底，行 hover 高亮 */
+html.dark .el-table {
+  --el-table-bg-color: transparent;
+  --el-table-tr-bg-color: transparent;
+  --el-table-header-bg-color: rgba(255, 255, 255, 0.04);
+  --el-table-row-hover-bg-color: rgba(255, 255, 255, 0.06);
+  --el-table-border-color: var(--tl-border);
+  background: transparent;
+}
+
+/* 弹层 / 下拉 → 实底玻璃，避免文字叠底看不清 */
+html.dark .el-popper,
+html.dark .el-dialog,
+html.dark .el-message-box,
+html.dark .el-select__popper {
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+}
+
+/* 输入控件统一过渡 */
+html.dark .el-input__wrapper,
+html.dark .el-button {
+  transition: all var(--tl-transition);
+}
+
+/* 滚动条 */
+html.dark ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+html.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+  background-clip: padding-box;
+}
+
+/* 页面切换淡入 */
+@keyframes tl-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.tl-fade-in {
+  animation: tl-fade-in 0.32s ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tl-fade-in {
+    animation: none;
+  }
+  html.dark .el-card.is-hover-lift:hover {
+    transform: none;
+  }
+}

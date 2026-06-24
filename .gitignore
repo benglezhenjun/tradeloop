@@ -6,6 +6,7 @@ __pycache__/
 venv/
 .uv/
 .pytest_cache/
+.claude/
 .coverage
 .coverage.*
 coverage.xml
